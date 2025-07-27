@@ -56,3 +56,8 @@ func (s *Store) GetFilesByUserID(userID uint) ([]models.File, error) {
 	}
 	return files, nil
 }
+
+func (s *Store) DeleteFileByID(id uint) (error) {
+	return s.DB.Delete(&models.File{}, id).Error
+}
+
