@@ -1,10 +1,10 @@
 package store
 
 import (
-	"log"
+	"github.com/thomascpowell/drive/internal/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"github.com/thomascpowell/drive/internal/models" 
+	"log"
 )
 
 type Store struct {
@@ -56,7 +56,3 @@ func (s *Store) GetFilesByUserID(userID uint) ([]models.File, error) {
 	}
 	return files, nil
 }
-
-
-
-
