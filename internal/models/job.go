@@ -8,6 +8,7 @@ type Job struct {
 }
 
 type JobType int
+
 const (
 	Upload JobType = iota
 	GetUserFiles
