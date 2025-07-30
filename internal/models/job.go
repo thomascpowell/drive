@@ -3,7 +3,7 @@ package models
 type Job struct {
 	ID      string
 	Type    JobType
-	Payload any
+	Payload any // must be a reference
 	Done    chan error
 }
 

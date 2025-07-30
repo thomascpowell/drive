@@ -1,6 +1,7 @@
 package jobs
 
 import (
+	"reflect"
 	"errors"
 	"fmt"
 	"github.com/thomascpowell/drive/internal/models"
@@ -60,12 +61,12 @@ func (d *Dispatcher) process(job *models.Job) {
 }
 
 func (d *Dispatcher) handleUpload(job *models.Job) {
-	file, ok := job.Payload.(*models.File)
-	if !ok {
-		job.Done <- fmt.Errorf("invalid payload type for upload")
+	file, err := validate[models.File](job.Payload)
+	if err != nil {
+		job.Done <- err
 		return
 	}
-	err := d.Store.CreateFile(file)
+	err = d.Store.CreateFile(file)
 	job.Done <- err
 }
 
@@ -80,3 +81,21 @@ func (d *Dispatcher) handleGetFile(job *models.Job) {
 func (d *Dispatcher) handleDeleteFile(job *models.Job) {
  // todo
 }
+
+func validate[T any](payload any) (*T, error) {
+	isPointer := reflect.ValueOf(payload).Kind() == reflect.Ptr
+	if !isPointer {
+		return nil, errors.New("payload must be a pointer")
+	}
+	ptr, ok := payload.(*T)
+	if !ok {
+		return nil, fmt.Errorf("unexpected type in payload: got %T, want *%T", payload, new(T))
+	}
+	return ptr, nil
+}
+
+
+
+
+
+
