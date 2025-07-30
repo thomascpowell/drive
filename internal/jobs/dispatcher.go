@@ -30,17 +30,17 @@ func (d *Dispatcher) Dispatch(job models.Job) error {
 func (d *Dispatcher) StartWorker() {
 	go func() {
 		for job := range d.JobQueue {
-			d.process(job)
+			d.process(&job)
 		}
 	}()
 }
 
-func (d *Dispatcher) process(job models.Job) {
-	switch job.Type { // write helper functions for these
-	case models.Upload:
-	case models.GetUserFiles:
-	case models.GetFile:
-	case models.DeleteFile:
+func (d *Dispatcher) process(job *models.Job) {
+	switch job.Type {
+	case models.Upload: handleUpload(job)
+	case models.GetUserFiles: handleGetUserFiles(job)
+	case models.GetFile: handleGetFile(job)
+	case models.DeleteFile: handleDeleteFile(job)
 	default:
 		job.Done <- errors.New("unknown job type")
 	}
