@@ -3,8 +3,8 @@ package jobs
 import (
 	"errors"
 	"fmt"
-	"github.com/thomascpowell/drive/internal/models"
-	"github.com/thomascpowell/drive/internal/store"
+	"github.com/thomascpowell/drive/models"
+	"github.com/thomascpowell/drive/store"
 	"reflect"
 )
 

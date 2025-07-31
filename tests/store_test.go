@@ -1,12 +1,13 @@
-package store
+package tests
 
 import (
-	"github.com/thomascpowell/drive/internal/models"
+	"github.com/thomascpowell/drive/models"
+	"github.com/thomascpowell/drive/store"
 	"testing"
 )
 
 func TestDBOperations(t *testing.T) {
-	s := NewStore(":memory:")
+	s := store.NewStore(":memory:")
 
 	testUser := &models.User{
 		Username: "testuser",

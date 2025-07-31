@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thomascpowell/drive/internal/jobs"
+	"github.com/thomascpowell/drive/jobs"
 )
 
 func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {

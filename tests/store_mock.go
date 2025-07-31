@@ -1,7 +1,7 @@
-package jobs
+package tests
 
 import (
-	"github.com/thomascpowell/drive/internal/models"
+	"github.com/thomascpowell/drive/models"
 )
 
 type MockStore struct {

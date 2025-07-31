@@ -1,7 +1,7 @@
 package store
 
 import (
-	"github.com/thomascpowell/drive/internal/models"
+	"github.com/thomascpowell/drive/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
