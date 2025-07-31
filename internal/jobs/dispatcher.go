@@ -10,10 +10,10 @@ import (
 
 type Dispatcher struct {
 	JobQueue chan *models.Job
-	Store    *store.Store
+	Store    store.StoreInterface
 }
 
-func NewDispatcher(store *store.Store, size int) *Dispatcher {
+func NewDispatcher(store store.StoreInterface, size int) *Dispatcher {
 	return &Dispatcher{
 		JobQueue: make(chan *models.Job, size),
 		Store:    store,
@@ -80,7 +80,7 @@ func (d *Dispatcher) handleGetUserFiles(job *models.Job) {
 		job.Done <- models.Result{Err: err}
 		return
 	}
-	files, err := d.Store.GetFilesByUserID(userID)
+	files, err := d.Store.GetFilesByUserID(*userID)
 	job.Done <- models.Result{Value: files, Err: err}
 }
 
@@ -90,7 +90,7 @@ func (d *Dispatcher) handleGetFile(job *models.Job) {
 		job.Done <- models.Result{Err: err}
 		return
 	}
-	file, err := d.Store.GetFileByID(fileID)
+	file, err := d.Store.GetFileByID(*fileID)
 	job.Done <- models.Result{Value: file, Err: err}
 }
 
@@ -100,7 +100,7 @@ func (d *Dispatcher) handleDeleteFile(job *models.Job) {
 		job.Done <- models.Result{Err: err}
 		return
 	}
-	err = d.Store.DeleteFileByID(fileID)
+	err = d.Store.DeleteFileByID(*fileID)
 	job.Done <- models.Result{Err: err}
 }
 
