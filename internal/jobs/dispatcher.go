@@ -71,7 +71,13 @@ func (d *Dispatcher) handleUpload(job *models.Job) {
 }
 
 func (d *Dispatcher) handleGetUserFiles(job *models.Job) {
- // todo
+	userID, err := validate[uint](job.Payload)
+	if err != nil {
+		job.Done <- err
+		return
+	}
+	files, err := d.Store.GetFilesByUserID(userID)
+	job.Done <- err
 }
 
 func (d *Dispatcher) handleGetFile(job *models.Job) {
