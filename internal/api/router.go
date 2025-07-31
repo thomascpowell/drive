@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/thomascpowell/drive/internal/jobs"
 	"os"
 	"time"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 	router := gin.Default()
 
 	var frontend_url string
@@ -26,9 +27,9 @@ func SetupRouter() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.POST("/upload", handleUpload)               // upload a file
-	router.GET("/users/:id/files", handleGetUserFiles) // get files by user id
-	router.GET("/files/:id", handleGetFile)            // get file by file id
-	router.DELETE("/files/:id", handleDeleteFile)      // delete file by file id
+	router.POST("/upload", handleUpload(dispatcher))               // upload a file
+	router.GET("/users/:id/files", handleGetUserFiles(dispatcher)) // get files by user id
+	router.GET("/files/:id", handleGetFile(dispatcher))            // get file by file id
+	router.DELETE("/files/:id", handleDeleteFile(dispatcher))      // delete file by file id
 	return router
 }

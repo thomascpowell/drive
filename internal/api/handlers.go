@@ -2,16 +2,25 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/thomascpowell/drive/internal/jobs"
 )
 
-func handleUpload(ctx *gin.Context) {
+func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+	}
 }
 
-func handleGetUserFiles(ctx *gin.Context) {
+func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+	}
 }
 
-func handleGetFile(ctx *gin.Context) {
+func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+	}
 }
 
-func handleDeleteFile(ctx *gin.Context) {
+func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+	}
 }
