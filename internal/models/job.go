@@ -3,8 +3,8 @@ package models
 type Job struct {
 	ID      string
 	Type    JobType
-	Payload any // must be a reference
-	Done    chan error
+	Payload any
+	Done    chan Result
 }
 
 type JobType int

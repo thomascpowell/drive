@@ -16,7 +16,8 @@ func TestDBOperations(t *testing.T) {
 		t.Fatalf("failed to create user: %v", err)
 	}
 
-	user, err := s.GetUserByUsername("testuser")
+	username := "testuser"
+	user, err := s.GetUserByUsername(&username)
 	if err != nil {
 		t.Fatalf("failed to get user: %v", err)
 	}
@@ -35,7 +36,7 @@ func TestDBOperations(t *testing.T) {
 		t.Fatalf("failed to create file: %v", err)
 	}
 
-	file, err := s.GetFileByID(testFile.ID)
+	file, err := s.GetFileByID(&testFile.ID)
 	if err != nil {
 		t.Fatalf("failed to get file by id: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestDBOperations(t *testing.T) {
 		t.Fatalf("incorrect file returned")
 	}
 
-	files, err := s.GetFilesByUserID(testUserID)
+	files, err := s.GetFilesByUserID(&testUserID)
 	if err != nil {
 		t.Fatalf("failed to get files by user id: %v", err)
 	}
@@ -51,10 +52,10 @@ func TestDBOperations(t *testing.T) {
 		t.Errorf("expected 1 file, got %d", len(files))
 	}
 
-	if err := s.DeleteFileByID(testFile.ID); err != nil {
+	if err := s.DeleteFileByID(&testFile.ID); err != nil {
 		t.Fatalf("failed to delete file: %v", err)
 	}
-	if _, err := s.GetFileByID(testFile.ID); err == nil {
+	if _, err := s.GetFileByID(&testFile.ID); err == nil {
 		t.Errorf("expected error accessing deleted file, got none")
 	}
 }
