@@ -29,6 +29,3 @@ func (m *MockStore) GetFilesByUserID(userID uint) ([]models.File, error) {
 func (m *MockStore) DeleteFileByID(id uint) error {
 	return m.DeleteFileByIDFunc(id)
 }
-
-
-
