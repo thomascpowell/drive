@@ -59,9 +59,21 @@ func (d *Dispatcher) process(job *models.Job) {
 		d.handleGetFile(job)
 	case models.DeleteFile:
 		d.handleDeleteFile(job)
+	case models.GetUser:
+		d.handleGetUser(job)
 	default:
 		job.Done <- models.Result{Err: errors.New("unknown job type")}
 	}
+}
+
+func (d *Dispatcher) handleGetUser(job *models.Job) {
+	username, err := validate[string](job.Payload)
+	if err != nil {
+		job.Done <- models.Err(err)
+		return
+	}
+	user, err := d.Store.GetUserByUsername(*username)
+	job.Done <- models.Result{Value: user, Err: err}
 }
 
 func (d *Dispatcher) handleUpload(job *models.Job) {

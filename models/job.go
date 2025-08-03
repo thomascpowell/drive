@@ -14,4 +14,5 @@ const (
 	GetUserFiles
 	GetFile
 	DeleteFile
+	GetUser
 )
