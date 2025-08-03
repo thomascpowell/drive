@@ -10,6 +10,7 @@ type MockStore struct {
 	GetFilesByUserIDFunc func(uint) ([]models.File, error)
 	GetFileByIDFunc      func(uint) (*models.File, error)
 	DeleteFileByIDFunc   func(uint) error
+	GetUserByUsernameFunc func(string) (*models.User, error)
 }
 
 // satisfy StoreInterface
@@ -17,7 +18,7 @@ func (m *MockStore) CreateUser(u *models.User) error {
 	return nil
 }
 func (m *MockStore) GetUserByUsername(username string) (*models.User, error) {
-	return nil, nil
+	return m.GetUserByUsernameFunc(username)
 }
 func (m *MockStore) CreateFile(f *models.File) error {
 	return m.CreateFileFunc(f)
