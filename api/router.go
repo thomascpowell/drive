@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/thomascpowell/drive/internal/jobs"
+	"github.com/thomascpowell/drive/jobs"
 	"os"
 	"time"
 )
@@ -31,5 +31,6 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 	router.GET("/users/:id/files", handleGetUserFiles(dispatcher)) // get files by user id
 	router.GET("/files/:id", handleGetFile(dispatcher))            // get file by file id
 	router.DELETE("/files/:id", handleDeleteFile(dispatcher))      // delete file by file id
+	// TODO: auth endpoint
 	return router
 }

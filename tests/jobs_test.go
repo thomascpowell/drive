@@ -9,6 +9,41 @@
 		"time"
 	)
 
+	func TestGetUser(t *testing.T) {
+		mock := &MockStore{
+			GetUserByUsernameFunc: func(username string) (*models.User, error) {
+				return &models.User{ID: 1}, nil
+			},
+		}
+		dispatcher := jobs.NewDispatcher(mock, 1)
+		dispatcher.StartWorkers(1)
+		defer dispatcher.Stop()
+		testUsername := "user"
+		done := make(chan models.Result, 1)
+		job := &models.Job{
+			ID:      "JOB_TEST_0",
+			Type:    models.GetUser,
+			Payload: &testUsername,
+			Done:    done,
+		}
+		if err := dispatcher.Dispatch(job); err != nil {
+			t.Fatalf("dispatch failed: %v", err)
+		}
+		select {
+		case res := <-done:
+			if res.Err != nil {
+				t.Fatalf("unexpected error: %v", res.Err)
+			}
+			user, ok := res.Value.(*models.User)
+			if !ok {
+				t.Fatalf("expected *models.User, got %T", res.Value)
+			}
+			Expect(t, user.ID, 1, "userID")
+		case <-time.After(time.Second):
+			t.Fatal("job did not complete")
+		}
+	}
+
 	func TestHandleGetFile_Success(t *testing.T) {
 		mock := &MockStore{
 			GetFileByIDFunc: func(id uint) (*models.File, error) {
