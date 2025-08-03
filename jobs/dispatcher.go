@@ -61,9 +61,21 @@ func (d *Dispatcher) process(job *models.Job) {
 		d.handleDeleteFile(job)
 	case models.GetUser:
 		d.handleGetUser(job)
+	case models.RegisterUser:
+		d.handleRegisterUser(job)
+	case models.AuthenticateUser:
+		d.handleAuthenticateUser(job)
 	default:
 		job.Done <- models.Result{Err: errors.New("unknown job type")}
 	}
+}
+
+func (d *Dispatcher) handleRegisterUser(job *models.Job) {
+	// TODO
+}
+
+func (d *Dispatcher) handleAuthenticateUser(job *models.Job) {
+	// TODO
 }
 
 func (d *Dispatcher) handleGetUser(job *models.Job) {
