@@ -71,11 +71,17 @@ func (d *Dispatcher) process(job *models.Job) {
 }
 
 func (d *Dispatcher) handleRegisterUser(job *models.Job) {
-	// TODO
+	user, err := validate[models.User](job.Payload)
+	if err != nil {
+		job.Done <- models.Err(err)
+		return
+	}
+	err = d.Store.CreateUser(user)
+	job.Done <- models.Result{Value: user, Err: err}
 }
 
 func (d *Dispatcher) handleAuthenticateUser(job *models.Job) {
-	// TODO
+	// TODO: get user, check hashed pw, return stateless jwt
 }
 
 func (d *Dispatcher) handleGetUser(job *models.Job) {
