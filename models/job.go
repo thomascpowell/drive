@@ -15,4 +15,7 @@ const (
 	GetFile
 	DeleteFile
 	GetUser
+	// TODO: implement
+	RegisterUser // payload: User
+	AuthenticateUser // payload: Credentials
 )

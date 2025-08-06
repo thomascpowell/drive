@@ -8,7 +8,7 @@ type User struct {
 	ID        uint      `gorm:"primaryKey"`           // primary source of identification
 	Username  string    `gorm:"uniqueIndex;not null"` // auth purposes
 	CreatedAt time.Time `gorm:"autoCreateTime"`
-	Password  string    `gorm:"not null"`
+	Password  string    `gorm:"not null"` // hashed
 }
 
 type File struct {
