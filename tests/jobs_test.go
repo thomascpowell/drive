@@ -5,6 +5,7 @@
 		"fmt"
 		"github.com/thomascpowell/drive/jobs"
 		"github.com/thomascpowell/drive/models"
+		"github.com/thomascpowell/drive/utils"
 		"testing"
 		"time"
 	)
@@ -38,7 +39,7 @@
 			if !ok {
 				t.Fatalf("expected *models.User, got %T", res.Value)
 			}
-			Expect(t, user.ID, 1, "userID")
+			utils.Expect(t, user.ID, 1, "userID")
 		case <-time.After(time.Second):
 			t.Fatal("job did not complete")
 		}
@@ -73,7 +74,7 @@
 			if !ok {
 				t.Fatalf("expected *models.File, got %T", res.Value)
 			}
-			Expect(t, file.ID, 123, "fileID")
+			utils.Expect(t, file.ID, 123, "fileID")
 		case <-time.After(time.Second):
 			t.Fatal("job did not complete")
 		}
@@ -102,8 +103,8 @@
 		select {
 		case res := <-done:
 			file, _ := res.Value.(*models.File)
-			Expect(t, file, nil, "file")
-			Expect(t, res.Err != nil, true, "expected error but got nil")
+			utils.Expect(t, file, nil, "file")
+			utils.Expect(t, res.Err != nil, true, "expected error but got nil")
 		case <-time.After(time.Second):
 			t.Fatal("job did not complete")
 		}
@@ -158,7 +159,7 @@
 	for received < JOB_COUNT {
 		select {
 		case res := <-resultCh:
-			Expect(t, res.Err, nil, "job failed")
+			utils.Expect(t, res.Err, nil, "job failed")
 			file, ok := res.Value.(*models.File)
 			if !ok {
 				t.Fatalf("expected *models.File, got %T", res.Value)
