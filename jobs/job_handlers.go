@@ -1,14 +1,35 @@
 package jobs
 
 import (
-	"github.com/thomascpowell/drive/models"
-	"reflect"
 	"errors"
 	"fmt"
+	"github.com/thomascpowell/drive/models"
+	"golang.org/x/crypto/bcrypt"
+	"github.com/thomascpowell/drive/auth"
+	"reflect"
 )
 
 func (d *Dispatcher) handleAuthenticateUser(job *models.Job) {
-	// TODO: get user, check hashed pw, return stateless jwt
+	credentials, err := validate[models.Credentials](job.Payload)
+	if err != nil {
+		job.Done <- models.Err(err)
+		return
+	}
+	user, err := d.Store.GetUserByUsername(credentials.Username)
+	if err != nil {
+		job.Done <- models.Err(err)
+		return
+	}
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password)); err != nil {
+		job.Done <- models.Err(fmt.Errorf("invalid credentials"))
+		return
+	}
+	token, err := auth.GenerateJWT(user.ID)
+	if err != nil {
+		job.Done <- models.Err(fmt.Errorf("token generation failed"))
+		return
+	}
+	job.Done <- models.Result{Value: token}
 }
 
 func (d *Dispatcher) handleRegisterUser(job *models.Job) {
@@ -73,7 +94,7 @@ func (d *Dispatcher) handleDeleteFile(job *models.Job) {
 
 func validate[T any](payload any) (*T, error) {
 	if payload == nil {
-    return nil, errors.New("payload is nil")
+		return nil, errors.New("payload is nil")
 	}
 	isPointer := reflect.ValueOf(payload).Kind() == reflect.Ptr
 	if !isPointer {
@@ -85,4 +106,3 @@ func validate[T any](payload any) (*T, error) {
 	}
 	return ptr, nil
 }
-
