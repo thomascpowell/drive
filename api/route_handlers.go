@@ -5,6 +5,18 @@ import (
 	"github.com/thomascpowell/drive/jobs"
 )
 
+func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+	}
+}
+
+func handleRegister(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+	}
+}
+
 func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 	}
