@@ -23,7 +23,6 @@ func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(job)
-		defer close(job.Done)
 		token := <-job.Done
 		if token.Err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": token.Err.Error()})
@@ -60,7 +59,6 @@ func handleRegister(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(job)
-		defer close(job.Done)
 		result := <-job.Done
 		if result.Err != nil { // check for username collision?
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
@@ -72,20 +70,29 @@ func handleRegister(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 
 func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// generate File object
+		// upload file job
+		// place file in generated location in FS
 	}
 }
 
 func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// get files by user job
+		// return []File as json
 	}
 }
 
 func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// get file by :id job
+		// return file as json
 	}
 }
 
 func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		// delete file by :id job
+		// return status and message
 	}
 }
