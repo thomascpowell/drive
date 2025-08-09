@@ -6,6 +6,7 @@ import (
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/utils"
 	"net/http"
+	"fmt"
 	"strings"
 )
 
@@ -70,9 +71,40 @@ func handleRegister(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 
 func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// generate File object
-		// upload file job
-		// place file in generated location in FS
+		upload, err := ctx.FormFile("file")
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
+			return
+		}
+		rawID, exists := ctx.Get("sub") // TODO: auth middleware, this should be uint
+		userID, ok := rawID.(uint)
+		if !exists || !ok {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user id not found"})
+			return
+		}
+		file := &models.File{
+			Filename:   upload.Filename,
+			Size:       upload.Size,
+			UploadedBy: userID,
+			Path:       fmt.Sprintf("%d/%s", userID, upload.Filename),
+		}
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.Upload,
+			Payload: file,
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+		result := <-job.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+			return
+		}
+		if err := ctx.SaveUploadedFile(upload, file.Path); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save file"})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"message": "file saved"})
 	}
 }
 

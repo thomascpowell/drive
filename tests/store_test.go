@@ -4,6 +4,7 @@ import (
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/store"
 	"testing"
+	"fmt"
 )
 
 func TestDBOperations(t *testing.T) {
@@ -28,7 +29,7 @@ func TestDBOperations(t *testing.T) {
 
 	testFile := &models.File{
 		Filename:   "testfile.txt",
-		Path:       "testuser/testfile.txt",
+		Path:       fmt.Sprintf("%d/testfile.txt", user.ID),
 		Size:       1,
 		UploadedBy: testUserID,
 	}
