@@ -11,6 +11,25 @@ import (
 
 func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		var creds models.Credentials
+		if err := ctx.ShouldBindJSON(&creds); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+			return
+		}
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.AuthenticateUser,
+			Payload: &creds,
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+		defer close(job.Done)
+		token := <-job.Done
+		if token.Err != nil {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": token.Err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"token": token.Value})
 	}
 }
 

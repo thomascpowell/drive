@@ -49,6 +49,7 @@ func (d *Dispatcher) startWorker(id int) {
 }
 
 func (d *Dispatcher) process(job *models.Job) {
+	// terrible what am i doing
 	switch job.Type {
 	case models.Upload:
 		d.handleUpload(job)
