@@ -45,10 +45,12 @@ func (d *Dispatcher) startWorker(id int) {
 		}
 		fmt.Printf("worker %d: processing job %s\n", id, job.ID)
 		d.process(job)
+		close(job.Done)
 	}
 }
 
 func (d *Dispatcher) process(job *models.Job) {
+	// terrible what am i doing
 	switch job.Type {
 	case models.Upload:
 		d.handleUpload(job)
@@ -68,4 +70,3 @@ func (d *Dispatcher) process(job *models.Job) {
 		job.Done <- models.Result{Err: errors.New("unknown job type")}
 	}
 }
-

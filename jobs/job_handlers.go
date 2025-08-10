@@ -4,8 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/thomascpowell/drive/models"
-	"golang.org/x/crypto/bcrypt"
 	"github.com/thomascpowell/drive/auth"
+	"github.com/thomascpowell/drive/utils"
+
 	"reflect"
 )
 
@@ -20,7 +21,7 @@ func (d *Dispatcher) handleAuthenticateUser(job *models.Job) {
 		job.Done <- models.Err(err)
 		return
 	}
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password)); err != nil {
+	if !utils.CheckPasswordHash(credentials.Password, user.Password) {
 		job.Done <- models.Err(fmt.Errorf("invalid credentials"))
 		return
 	}
