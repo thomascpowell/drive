@@ -1,12 +1,12 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/thomascpowell/drive/jobs"
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/utils"
 	"net/http"
-	"fmt"
 	"strings"
 )
 
@@ -110,8 +110,25 @@ func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 
 func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// get files by user job
-		// return []File as json
+		rawID, exists := ctx.Get("sub") // TODO: auth middleware, this should be uint
+		if !exists {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user id not found"})
+			return
+		}
+		userID := fmt.Sprint(rawID)
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.GetUserFiles,
+			Payload: userID,
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+		result := <-job.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+		}
+		ctx.JSON(http.StatusOK, gin.H{"message": result})
+
 	}
 }
 
