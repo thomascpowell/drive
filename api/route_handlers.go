@@ -1,12 +1,13 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/thomascpowell/drive/jobs"
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/utils"
 	"net/http"
-	"fmt"
+	"path/filepath"
 	"strings"
 )
 
@@ -76,10 +77,8 @@ func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
 			return
 		}
-		rawID, exists := ctx.Get("sub") // TODO: auth middleware, this should be uint
-		userID, ok := rawID.(uint)
-		if !exists || !ok {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user id not found"})
+		userID, ok := GetUserID(ctx)
+		if !ok {
 			return
 		}
 		file := &models.File{
@@ -110,21 +109,67 @@ func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 
 func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// get files by user job
-		// return []File as json
+		userID, ok := GetUserID(ctx)
+		if !ok {
+			return
+		}
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.GetUserFiles,
+			Payload: userID,
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+		result := <-job.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+		}
+		ctx.JSON(http.StatusOK, gin.H{"message": result})
+
 	}
 }
 
 func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// get file by :id job
-		// return file as json
+		userID, ok := GetUserID(ctx)
+		if !ok {
+			return
+		}
+		fileID, ok := GetSlug(ctx, "id")
+		if !ok {
+			return
+		}
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.GetFile,
+			Payload: fileID,
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+		result := <-job.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+		}
+		file, ok := result.Value.(models.File)
+		if !ok {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid job result type"})
+			return
+		}
+		if file.UploadedBy != userID {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user does not have access to this file"})
+		}
+		basePath, err := utils.GetFilePath()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+			return
+		}
+		filePath := filepath.Join(basePath, file.Path)
+		ctx.File(filePath)
 	}
 }
 
 func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// delete file by :id job
-		// return status and message
+		// TODO: after job refactor
 	}
 }

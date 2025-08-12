@@ -26,7 +26,7 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 	router.POST("/upload", handleUpload(dispatcher))               // upload a file
-	router.GET("/users/:id/files", handleGetUserFiles(dispatcher)) // get files by user id
+	router.GET("/files", handleGetUserFiles(dispatcher)) // get files by user id
 	router.GET("/files/:id", handleGetFile(dispatcher))            // get file by file id
 	router.DELETE("/files/:id", handleDeleteFile(dispatcher))      // delete file by file id
 	router.POST("/auth", handleAuth(dispatcher))                   // authenticate by credentials
