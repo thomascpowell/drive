@@ -1,0 +1,15 @@
+package utils
+
+import (
+	"os"
+	"path/filepath"
+)
+
+func GetFilePath() (string, error) {
+	path := filepath.Join(".", "user_files") // TODO: env this
+	err := os.MkdirAll(path, os.ModePerm)
+	if err != nil {
+		return "", err
+	}
+	return path, nil
+}
