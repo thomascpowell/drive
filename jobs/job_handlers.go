@@ -1,27 +1,19 @@
 package jobs
 
 import (
-	"errors"
 	"fmt"
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/auth"
 	"github.com/thomascpowell/drive/utils"
-
-	"reflect"
 )
 
-func (d *Dispatcher) handleAuthenticateUser(job *models.Job) {
-	credentials, err := validate[models.Credentials](job.Payload)
+func (d *Dispatcher) handleAuthenticateUser(payload *models.AuthenticateUserPayload, job *models.Job) {
+	user, err := d.Store.GetUserByUsername(payload.Username)
 	if err != nil {
 		job.Done <- models.Err(err)
 		return
 	}
-	user, err := d.Store.GetUserByUsername(credentials.Username)
-	if err != nil {
-		job.Done <- models.Err(err)
-		return
-	}
-	if !utils.CheckPasswordHash(credentials.Password, user.Password) {
+	if !utils.CheckPasswordHash(payload.Password, user.Password) {
 		job.Done <- models.Err(fmt.Errorf("invalid credentials"))
 		return
 	}
@@ -33,77 +25,33 @@ func (d *Dispatcher) handleAuthenticateUser(job *models.Job) {
 	job.Done <- models.Result{Value: token}
 }
 
-func (d *Dispatcher) handleRegisterUser(job *models.Job) {
-	user, err := validate[models.User](job.Payload)
-	if err != nil {
-		job.Done <- models.Err(err)
-		return
-	}
-	err = d.Store.CreateUser(user)
+func (d *Dispatcher) handleRegisterUser(payload *models.RegisterUserPayload, job *models.Job) {
+	user := payload.User
+	err := d.Store.CreateUser(user)
 	job.Done <- models.Result{Value: user, Err: err}
 }
 
-func (d *Dispatcher) handleGetUser(job *models.Job) {
-	username, err := validate[string](job.Payload)
-	if err != nil {
-		job.Done <- models.Err(err)
-		return
-	}
-	user, err := d.Store.GetUserByUsername(*username)
+func (d *Dispatcher) handleGetUser(payload *models.GetUserPayload, job *models.Job) {
+	user, err := d.Store.GetUserByUsername(payload.Username)
 	job.Done <- models.Result{Value: user, Err: err}
 }
 
-func (d *Dispatcher) handleUpload(job *models.Job) {
-	file, err := validate[models.File](job.Payload)
-	if err != nil {
-		job.Done <- models.Err(err)
-		return
-	}
-	err = d.Store.CreateFile(file)
+func (d *Dispatcher) handleUpload(payload *models.UploadPayload, job *models.Job) {
+	err := d.Store.CreateFile(payload)
 	job.Done <- models.Result{Err: err}
 }
 
-func (d *Dispatcher) handleGetUserFiles(job *models.Job) {
-	userID, err := validate[uint](job.Payload)
-	if err != nil {
-		job.Done <- models.Result{Err: err}
-		return
-	}
-	files, err := d.Store.GetFilesByUserID(*userID)
+func (d *Dispatcher) handleGetUserFiles(payload *models.GetUserFilesPayload, job *models.Job) {
+	files, err := d.Store.GetFilesByUserID(payload.UserID)
 	job.Done <- models.Result{Value: files, Err: err}
 }
 
-func (d *Dispatcher) handleGetFile(job *models.Job) {
-	fileID, err := validate[uint](job.Payload)
-	if err != nil {
-		job.Done <- models.Result{Err: err}
-		return
-	}
-	file, err := d.Store.GetFileByID(*fileID)
+func (d *Dispatcher) handleGetFile(payload *models.GetFilePayload, job *models.Job) {
+	file, err := d.Store.GetFileByID(payload.FileID)
 	job.Done <- models.Result{Value: file, Err: err}
 }
 
-func (d *Dispatcher) handleDeleteFile(job *models.Job) {
-	fileID, err := validate[uint](job.Payload)
-	if err != nil {
-		job.Done <- models.Result{Err: err}
-		return
-	}
-	err = d.Store.DeleteFileByID(*fileID)
+func (d *Dispatcher) handleDeleteFile(payload *models.DeleteFilePayload, job *models.Job) {
+	err := d.Store.DeleteFileByID(payload.FileID)
 	job.Done <- models.Result{Err: err}
-}
-
-func validate[T any](payload any) (*T, error) {
-	if payload == nil {
-		return nil, errors.New("payload is nil")
-	}
-	isPointer := reflect.ValueOf(payload).Kind() == reflect.Ptr
-	if !isPointer {
-		return nil, errors.New("payload must be a pointer")
-	}
-	ptr, ok := payload.(*T)
-	if !ok {
-		return nil, fmt.Errorf("unexpected type in payload: got %T, want *%T", payload, new(T))
-	}
-	return ptr, nil
 }
