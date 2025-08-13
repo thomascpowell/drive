@@ -24,7 +24,7 @@ func TestGetUser(t *testing.T) {
 	job := &models.Job{
 		ID:      "JOB_TEST_0",
 		Type:    models.GetUser,
-		Payload: &testUsername,
+		Payload: models.NewGetUserPayload(testUsername),
 		Done:    done,
 	}
 	if err := dispatcher.Dispatch(job); err != nil {
@@ -59,7 +59,7 @@ func TestHandleGetFile_Success(t *testing.T) {
 	job := &models.Job{
 		ID:      "JOB_TEST_1",
 		Type:    models.GetFile,
-		Payload: &testFileID,
+		Payload: models.NewGetFilePayload(testFileID),
 		Done:    done,
 	}
 	if err := dispatcher.Dispatch(job); err != nil {
@@ -94,7 +94,7 @@ func TestHandleGetFile_Fail(t *testing.T) {
 	job := &models.Job{
 		ID:      "JOB_TEST_2",
 		Type:    models.GetFile,
-		Payload: &testFileID,
+		Payload: models.NewGetFilePayload(testFileID),
 		Done:    done,
 	}
 	if err := dispatcher.Dispatch(job); err != nil {
@@ -127,12 +127,12 @@ func TestQueue(t *testing.T) {
 	results := make([]chan models.Result, JOB_COUNT)
 	resultCh := make(chan models.Result) // accumulates all results
 	for i := range JOB_COUNT {
-		payload := uint(i)
+		payload := models.NewGetFilePayload(uint(i))
 		done := make(chan models.Result, 1)
 		job := &models.Job{
 			ID:      fmt.Sprintf("JOB_TEST_%d", i),
 			Type:    models.GetFile,
-			Payload: &payload,
+			Payload: payload,
 			Done:    done,
 		}
 		if err := dispatcher.Dispatch(job); err != nil {

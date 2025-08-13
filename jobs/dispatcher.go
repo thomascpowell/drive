@@ -50,22 +50,28 @@ func (d *Dispatcher) startWorker(id int) {
 }
 
 func (d *Dispatcher) process(job *models.Job) {
-	// terrible what am i doing
 	switch job.Type {
 	case models.Upload:
-		d.handleUpload(job)
+		payload := &job.Payload.Upload
+		d.handleUpload(payload,job)
 	case models.GetUserFiles:
-		d.handleGetUserFiles(job)
+		payload := &job.Payload.GetUserFiles
+		d.handleGetUserFiles(payload, job)
 	case models.GetFile:
-		d.handleGetFile(job)
+		payload := &job.Payload.GetFile
+		d.handleGetFile(payload, job)
 	case models.DeleteFile:
-		d.handleDeleteFile(job)
+		payload := &job.Payload.DeleteFile
+		d.handleDeleteFile(payload, job)
 	case models.GetUser:
-		d.handleGetUser(job)
+		payload := &job.Payload.GetUser
+		d.handleGetUser(payload, job)
 	case models.RegisterUser:
-		d.handleRegisterUser(job)
+		payload := &job.Payload.RegisterUser
+		d.handleRegisterUser(payload, job)
 	case models.AuthenticateUser:
-		d.handleAuthenticateUser(job)
+		payload := &job.Payload.AuthenticateUser
+		d.handleAuthenticateUser(payload, job)
 	default:
 		job.Done <- models.Result{Err: errors.New("unknown job type")}
 	}
