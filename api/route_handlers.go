@@ -21,7 +21,7 @@ func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		job := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.AuthenticateUser,
-			Payload: &creds,
+			Payload: models.NewAuthenticateUserPayload(creds.Username, creds.Password),
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(job)
@@ -57,7 +57,7 @@ func handleRegister(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		job := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.RegisterUser,
-			Payload: &user,
+			Payload: models.NewRegisterUserPayload(user),
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(job)
@@ -142,7 +142,7 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		job := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.GetFile,
-			Payload: fileID,
+			Payload: models.NewGetFilePayload(fileID),
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(job)
