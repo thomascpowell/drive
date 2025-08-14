@@ -13,12 +13,13 @@ type StoreInterface interface {
 	CreateFile(f *models.File) error
 	GetFileByID(id uint) (*models.File, error)
 	GetFilesByUserID(userID uint) ([]models.File, error)
-	DeleteFileByID(id uint) (error)
+	DeleteFileByID(id uint) error
 }
 
 type Store struct {
 	DB *gorm.DB
 }
+
 var _ StoreInterface = (*Store)(nil)
 
 func NewStore(dsn string) *Store {
@@ -67,6 +68,6 @@ func (s *Store) GetFilesByUserID(userID uint) ([]models.File, error) {
 	return files, nil
 }
 
-func (s *Store) DeleteFileByID(id uint) (error) {
+func (s *Store) DeleteFileByID(id uint) error {
 	return s.DB.Delete(&models.File{}, id).Error
 }
