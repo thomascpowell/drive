@@ -14,7 +14,7 @@ func GenerateJWT(id uint) (string, error) {
 		"exp": time.Now().Add(TOKEN_DURATION).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(JWTSecret)
+	return token.SignedString(GetJWTSecret())
 }
 
 func ParseJWT(tokenString string) (*jwt.Token, error) {
@@ -22,6 +22,6 @@ func ParseJWT(tokenString string) (*jwt.Token, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return JWTSecret, nil
+		return GetJWTSecret(), nil
 	})
 }

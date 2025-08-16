@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     environment:
         JWT_SECRET: test
+        ENVIRONMENT: dev
 
   frontend:
     build:
