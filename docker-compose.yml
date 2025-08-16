@@ -5,6 +5,8 @@ services:
     volumes:
       - db_data:/app/data
     restart: unless-stopped
+    environment:
+        JWT_SECRET: test
 
   frontend:
     build:
