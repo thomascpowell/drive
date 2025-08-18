@@ -13,7 +13,7 @@
   }
 </script>
 
-<p>register</p>
+<p>login</p>
 
 <form on:submit|preventDefault={handleSubmit} action="submit">
   <input type="text" bind:value={username} placeholder="username" />
