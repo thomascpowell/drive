@@ -1,6 +1,7 @@
 import { API_URL } from '$lib/config'
+import type { Res } from '$lib/types'
 
-export async function checkHealth() {
+export async function checkHealth(): Promise<Res> {
   try {
     const res = await fetch(`${API_URL}/health`, {
       method: "GET",
@@ -8,6 +9,6 @@ export async function checkHealth() {
     const data = await res.json()
     return data
   } catch (err) {
-    return { status: "error" }
+    return { message: "error" }
   }
 }

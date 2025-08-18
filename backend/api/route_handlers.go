@@ -160,7 +160,7 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		}
 		basePath, err := utils.GetFilePath()
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		filePath := filepath.Join(basePath, file.Path)
