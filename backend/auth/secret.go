@@ -1,4 +1,12 @@
 package auth
 
-// TODO: replace with env from docker
-var JWTSecret = []byte("test")
+import (
+	"os"
+)
+
+func GetJWTSecret() []byte {
+	if os.Getenv("ENVIRONMENT") != "dev" {
+		return []byte(os.Getenv("JWT_SECRET"))
+	}
+	return []byte("test")
+}

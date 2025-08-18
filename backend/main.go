@@ -7,9 +7,13 @@ import (
 	"log"
 )
 
+var QUEUE_SIZE = 10
+var WORKER_COUNT = 4
+
 func main() {
 	store := store.NewStore("./data/app.db")
-	dispatcher := jobs.NewDispatcher(store, 10)
+	dispatcher := jobs.NewDispatcher(store, QUEUE_SIZE)
+	dispatcher.StartWorkers(WORKER_COUNT)
 	router := api.SetupRouter(dispatcher)
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("error starting gin: %v", err)

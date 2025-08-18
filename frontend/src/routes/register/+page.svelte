@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { login } from "$lib/login";
+  import { register } from "$lib/register";
   import type { Res } from "$lib/types"
 
   let username = "";
@@ -8,12 +8,12 @@
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
-    res = await login(username, password);
+    res = await register(username, password);
     console.log(res)
   }
 </script>
 
-<p>login</p>
+<p>register</p>
 
 <form on:submit|preventDefault={handleSubmit} action="submit">
   <input type="text" bind:value={username} placeholder="username" />

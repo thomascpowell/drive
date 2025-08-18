@@ -160,12 +160,21 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		}
 		basePath, err := utils.GetFilePath()
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		filePath := filepath.Join(basePath, file.Path)
 		ctx.File(filePath)
 	}
+}
+
+func handleHealth(ctx *gin.Context) {
+	id, exists := ctx.Get("sub")
+	message := "ok"
+	if exists {
+		message += ", has token for id: " + id.(string)
+	}
+	ctx.JSON(200, gin.H{"message": message})
 }
 
 func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {

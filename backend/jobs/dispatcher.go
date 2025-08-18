@@ -13,10 +13,11 @@ type Dispatcher struct {
 }
 
 func NewDispatcher(store store.StoreInterface, size int) *Dispatcher {
-	return &Dispatcher{
+	dispatcher := Dispatcher{
 		JobQueue: make(chan *models.Job, size),
 		Store:    store,
 	}
+	return &dispatcher
 }
 
 func (d *Dispatcher) Stop() {
@@ -53,7 +54,7 @@ func (d *Dispatcher) process(job *models.Job) {
 	switch job.Type {
 	case models.Upload:
 		payload := &job.Payload.Upload
-		d.handleUpload(payload,job)
+		d.handleUpload(payload, job)
 	case models.GetUserFiles:
 		payload := &job.Payload.GetUserFiles
 		d.handleGetUserFiles(payload, job)
