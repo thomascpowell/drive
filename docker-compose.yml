@@ -6,8 +6,8 @@ services:
       - db_data:/app/data
     restart: unless-stopped
     environment:
-        JWT_SECRET: test
-        ENVIRONMENT: dev
+      JWT_SECRET: test
+      ENVIRONMENT: EXAMPLE
 
   frontend:
     build:

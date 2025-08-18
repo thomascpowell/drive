@@ -12,7 +12,7 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 	router := gin.Default()
 
 	env := os.Getenv("ENVIRONMENT")
-	if env == "dev" {
+	if env != "prod" {
 		router.Use(cors.New(cors.Config{
 			AllowOrigins:     []string{"http://localhost:5173"},
 			AllowMethods:     []string{"GET", "POST", "DELETE"},
