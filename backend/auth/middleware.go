@@ -33,3 +33,28 @@ func JWTAuth() gin.HandlerFunc {
 		ctx.Next()
 	}
 }
+
+
+func LoadTokenOnly() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		authHeader := ctx.GetHeader("Authorization")
+		if authHeader == "" {
+			return
+		}
+		parts := strings.SplitN(authHeader, " ", 2)
+		if len(parts) != 2 || parts[0] != "Bearer" {
+			return
+		}
+		tokenStr := parts[1]
+		token, err := ParseJWT(tokenStr)
+		if err != nil || !token.Valid {
+			return
+		}
+		if claims, ok := token.Claims.(jwt.MapClaims); ok {
+			if sub, exists := claims["sub"].(string); exists {
+				ctx.Set("sub", sub)
+			}
+		}
+		ctx.Next()
+	}
+}

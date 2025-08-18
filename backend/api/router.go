@@ -30,8 +30,6 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 	router.DELETE("/files/:id", auth.JWTAuth(), handleDeleteFile(dispatcher)) // delete file by file id
 	router.POST("/auth", handleAuth(dispatcher))                              // authenticate by credentials
 	router.POST("/register", handleRegister(dispatcher))                      // add a new user
-	router.GET("/health", func(c *gin.Context) {                              // check connection
-		c.JSON(200, gin.H{"message": "ok"})
-	})
+	router.GET("/health", auth.LoadTokenOnly(), handleHealth)                 // Unconfirmed: should show token if its there
 	return router
 }
