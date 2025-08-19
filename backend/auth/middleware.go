@@ -34,20 +34,16 @@ func JWTAuth() gin.HandlerFunc {
 	}
 }
 
-
 func LoadTokenOnly() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		authHeader := ctx.GetHeader("Authorization")
-		if authHeader == "" {
+		tokenRaw, err := ctx.Cookie("jwt")
+		if err != nil {
+			ctx.Next()
 			return
 		}
-		parts := strings.SplitN(authHeader, " ", 2)
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			return
-		}
-		tokenStr := parts[1]
-		token, err := ParseJWT(tokenStr)
+		token, err := ParseJWT(tokenRaw)
 		if err != nil || !token.Valid {
+			ctx.Next()
 			return
 		}
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
@@ -58,3 +54,5 @@ func LoadTokenOnly() gin.HandlerFunc {
 		ctx.Next()
 	}
 }
+
+

@@ -30,7 +30,12 @@ func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": token.Err.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, gin.H{"token": token.Value})
+		day := 86400
+		secure := false
+		frontend := utils.GetFrontendURL()
+		httpOnly := true
+		ctx.SetCookie("jwt", token.Value.(string), day, "/", frontend, secure, httpOnly)
+		ctx.JSON(http.StatusOK, gin.H{"message": "log in successful"})
 	}
 }
 
@@ -174,6 +179,7 @@ func handleHealth(ctx *gin.Context) {
 	if exists {
 		message += ", has token for id: " + id.(string)
 	}
+	fmt.Print(id)
 	ctx.JSON(200, gin.H{"message": message})
 }
 
