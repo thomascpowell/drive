@@ -177,7 +177,7 @@ func handleHealth(ctx *gin.Context) {
 	id, exists := ctx.Get("sub")
 	message := "ok"
 	if exists {
-		message += ", has token for id: " + id.(string)
+		message += ", has token for id: " + fmt.Sprint(id)
 	}
 	fmt.Print(id)
 	ctx.JSON(200, gin.H{"message": message})
@@ -185,6 +185,6 @@ func handleHealth(ctx *gin.Context) {
 
 func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// TODO: after job refactor
+		// TODO
 	}
 }
