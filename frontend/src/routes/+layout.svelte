@@ -1,6 +1,7 @@
 <div>
   <a href="/">home</a>
-  <a href="/auth">auth</a>
+  <a href="/login">login</a>
+  <a href="/register">register</a>
 </div>
 <slot />
 
