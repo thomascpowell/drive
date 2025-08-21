@@ -11,8 +11,10 @@ coverage.*
 profile.cov
 go.work
 go.work.sum
+
 .env
 .DS_Store
+*.db
 
 # frontend
 node_modules/
