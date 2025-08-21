@@ -15,6 +15,7 @@ go.work.sum
 .env
 .DS_Store
 *.db
+backend/data/user_files/
 
 # frontend
 node_modules/
