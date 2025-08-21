@@ -6,9 +6,9 @@ export async function login(username: string, password: string): Promise<Res> {
   const endpoint = `${API_URL}/login`
 
   const res = await fetch(endpoint, {
-    method: 'POST',
+    method: 'post',
     headers: {
-      'Content-Type': 'application/json'
+      'content-type': 'application/json'
     },
     body: creds,
   })

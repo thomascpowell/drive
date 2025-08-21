@@ -183,6 +183,11 @@ func handleHealth(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{"message": message})
 }
 
+func handleLogout(ctx *gin.Context) {
+	// overwrite cookie with blank
+	ctx.SetCookie("jwt", "", -1, "/", "", true, true)
+}
+
 func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// TODO
