@@ -13,10 +13,8 @@
   }
 </script>
 
-<p>login</p>
-
 <form on:submit|preventDefault={handleSubmit} action="submit">
   <input type="text" bind:value={username} placeholder="username" />
   <input type="text" bind:value={password} placeholder="password" />
-  <button>submit</button>
+  <button>login</button>
 </form>

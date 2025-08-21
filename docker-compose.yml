@@ -6,8 +6,9 @@ services:
       - db_data:/app/data
     restart: unless-stopped
     environment:
-      JWT_SECRET: test
-      ENVIRONMENT: EXAMPLE
+      JWT_SECRET: EXAMPLE
+      ENVIRONMENT: dev
+      FE_URL: localhost
 
   frontend:
     build:

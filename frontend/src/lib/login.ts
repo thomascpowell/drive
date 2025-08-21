@@ -3,7 +3,7 @@ import type { Res } from '$lib/types'
 
 export async function login(username: string, password: string): Promise<Res> {
   const creds = JSON.stringify({ username, password })
-  const endpoint = `${API_URL}/auth`
+  const endpoint = `${API_URL}/login`
 
   const res = await fetch(endpoint, {
     method: 'POST',

@@ -28,7 +28,7 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 	router.GET("/files", auth.JWTAuth(), handleGetUserFiles(dispatcher))      // get files by user id
 	router.GET("/files/:id", auth.JWTAuth(), handleGetFile(dispatcher))       // get file by file id
 	router.DELETE("/files/:id", auth.JWTAuth(), handleDeleteFile(dispatcher)) // delete file by file id
-	router.POST("/auth", handleAuth(dispatcher))                              // authenticate by credentials
+	router.POST("/login", handleAuth(dispatcher))                             // authenticate by credentials
 	router.POST("/register", handleRegister(dispatcher))                      // add a new user
 	router.GET("/health", auth.LoadTokenOnly(), handleHealth)                 // Unconfirmed: should show token if its there
 	return router
