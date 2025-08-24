@@ -24,13 +24,13 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 		}))
 	}
 
-	router.POST("/upload", auth.JWTAuth(), handleUpload(dispatcher))          // upload a file
-	router.GET("/files", auth.JWTAuth(), handleGetUserFiles(dispatcher))      // get files by user id
-	router.GET("/files/:id", auth.JWTAuth(), handleGetFile(dispatcher))       // get file by file id
-	router.DELETE("/files/:id", auth.JWTAuth(), handleDeleteFile(dispatcher)) // delete file by file id
-	router.POST("/login", handleAuth(dispatcher))                             // authenticate by credentials
-	router.POST("/register", handleRegister(dispatcher))                      // add a new user
-	router.POST("/logout", handleLogout)                                      // logout a user
-	router.GET("/health", auth.LoadTokenOnly(), handleHealth)                 // Unconfirmed: should show token if its there
+	router.POST("/upload", auth.RequireAuth(), handleUpload(dispatcher))          // upload a file
+	router.GET("/files", auth.RequireAuth(), handleGetUserFiles(dispatcher))      // get files by user id
+	router.GET("/files/:id", auth.RequireAuth(), handleGetFile(dispatcher))       // get file by file id
+	router.DELETE("/files/:id", auth.RequireAuth(), handleDeleteFile(dispatcher)) // delete file by file id
+	router.POST("/login", handleAuth(dispatcher))                                 // authenticate by credentials
+	router.POST("/register", handleRegister(dispatcher))                          // add a new user
+	router.POST("/logout", handleLogout)                                          // logout a user
+	router.GET("/health", auth.LoadIdOnly(), handleHealth)                        // Unconfirmed: should show token if its there
 	return router
 }
