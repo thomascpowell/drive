@@ -82,14 +82,15 @@ func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
 			return
 		}
-		userID, ok := GetUserID(ctx)
+		userID, ok := ctx.Get("sub")
 		if !ok {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
 		file := models.File{
 			Filename:   upload.Filename,
 			Size:       upload.Size,
-			UploadedBy: userID,
+			UploadedBy: userID.(uint),
 			Path:       fmt.Sprintf("%d/%s", userID, upload.Filename),
 		}
 		job := &models.Job{
@@ -104,7 +105,15 @@ func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
 			return
 		}
-		if err := ctx.SaveUploadedFile(upload, file.Path); err != nil {
+
+		basePath, err := utils.GetFilePath()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+			return
+		}
+		fullPath := filepath.Join(basePath, file.Path)
+
+		if err := ctx.SaveUploadedFile(upload, fullPath); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to save file"})
 			return
 		}
@@ -114,14 +123,14 @@ func handleUpload(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 
 func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		userID, ok := GetUserID(ctx)
+		userID, ok := ctx.Get("sub")
 		if !ok {
 			return
 		}
 		job := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.GetUserFiles,
-			Payload: models.NewGetUserFilesPayload(userID),
+			Payload: models.NewGetUserFilesPayload(userID.(uint)),
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(job)
@@ -136,7 +145,7 @@ func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 
 func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		userID, ok := GetUserID(ctx)
+		userID, ok := ctx.Get("sub")
 		if !ok {
 			return
 		}
@@ -179,7 +188,6 @@ func handleHealth(ctx *gin.Context) {
 	if exists {
 		message += ", has token for id: " + fmt.Sprint(id)
 	}
-	fmt.Print(id)
 	ctx.JSON(200, gin.H{"message": message})
 }
 
