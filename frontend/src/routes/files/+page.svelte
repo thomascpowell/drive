@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { get_files } from "$lib/get_files";
   import type { File } from "$lib/types";
+import { API_URL } from '$lib/config'
 
   let files: File[];
   onMount(async () => {
@@ -12,7 +13,7 @@
 
 <div>
   {#each files as file}
-    <a href={"/files/" + file.ID}>{file.Filename}</a>
+    <a href={API_URL + "/files/" + file.ID} download>{file.Filename}</a>
   {/each}
 </div>
 

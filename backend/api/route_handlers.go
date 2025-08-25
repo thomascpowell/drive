@@ -179,6 +179,8 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			return
 		}
 		filePath := filepath.Join(basePath, file.Path)
+		ctx.Header("Content-Disposition", `attachment; filename="`+file.Filename+`"`)
+		ctx.Header("Content-Type", "application/octet-stream") 
 		ctx.File(filePath)
 	}
 }
