@@ -1,8 +1,8 @@
 import { API_URL } from '$lib/config'
-import type { Res, File } from '$lib/types'
+import type { File } from '$lib/types'
 
-export async function get_files(): Promise<File[]> {
-  const ENDPOINT = API_URL + "/files"
+export async function get_file(id: string): Promise<File> {
+  const ENDPOINT = API_URL + "/files/" + id
   const res = await fetch(ENDPOINT, {
     method: "GET",
     credentials: "include",
@@ -11,6 +11,6 @@ export async function get_files(): Promise<File[]> {
   if (data.error) {
     console.error(data.error);
   }
-  const files: File[] = data.message
-  return files
+  const file: File = data.message
+  return file
 }
