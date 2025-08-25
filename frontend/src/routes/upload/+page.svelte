@@ -1,5 +1,6 @@
 <script lang="ts">
   import { upload } from "$lib/upload";
+  import type { Res } from "$lib/types";
 
   let file: File | null = null;
   let files: FileList | null = null;
@@ -7,9 +8,12 @@
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
-    if (file != null) {
-      await upload(file as File);
+    let res: Res
+    if (file == null) {
+      return
     }
+    res = await upload(file as File);
+    console.log(res)
   }
 </script>
 

@@ -4,6 +4,7 @@
   <a href="/register">register</a>
   <a href="/logout">logout</a>
   <a href="/upload">upload</a>
+  <a href="/files">files</a>
 </div>
 <slot />
 

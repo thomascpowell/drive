@@ -138,7 +138,7 @@ func handleGetUserFiles(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		if result.Err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
 		}
-		ctx.JSON(http.StatusOK, gin.H{"message": result})
+		ctx.JSON(http.StatusOK, gin.H{"message": result.Value})
 
 	}
 }
