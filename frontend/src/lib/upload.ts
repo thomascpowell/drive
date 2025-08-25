@@ -1,13 +1,17 @@
 import { API_URL } from "./config";
+import type { Res } from '$lib/types'
 
-export async function upload(file: File) {
-  const endpoint = API_URL + "/upload"
+export async function upload(file: File): Promise<Res> {
+  const ENDPOINT = API_URL + "/upload"
   const formData = new FormData();
   formData.append("file", file)
 
-  await fetch(endpoint, {
+  const res = await fetch(ENDPOINT, {
     method: "POST",
     body: formData,
     credentials: "include",
   });
+
+  const data = await res.json();
+  return data
 }
