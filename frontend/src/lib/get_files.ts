@@ -8,6 +8,9 @@ export async function get_files(): Promise<File[]> {
     credentials: "include",
   });
   const data = await res.json();
+  if (data.error) {
+    console.error(data.error);
+  }
   const files: File[] = data.message
   return files
 }
