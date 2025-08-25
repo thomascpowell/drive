@@ -164,11 +164,12 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		if result.Err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
 		}
-		file, ok := result.Value.(models.File)
+		fileptr, ok := result.Value.(*models.File)
 		if !ok {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid job result type"})
 			return
 		}
+		file := *fileptr
 		if file.UploadedBy != userID {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user does not have access to this file"})
 		}
