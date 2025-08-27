@@ -1,18 +1,23 @@
+<script>
+    import NavLink from "./NavLink.svelte";
+
+</script>
+
 <div>
-  <a href="/">home</a>
-  <a href="/login">login</a>
-  <a href="/register">register</a>
-  <a href="/logout">logout</a>
-  <a href="/upload">upload</a>
-  <a href="/files">files</a>
-  <a href="/health">health</a>
+  <NavLink href="/">home</NavLink>
+  <NavLink href="/upload">upload</NavLink>
+  <NavLink href="/files">files</NavLink>
+  <NavLink href="/logout">logout</NavLink>
 </div>
 <slot />
 
 <style>
   div {
+    position: absolute;
     display: flex;
     align-items: center;
     gap: 1em;
   }
+
+  
 </style>

@@ -1,5 +1,9 @@
 <script lang="ts">
   import ArrowRight from "../icons/ArrowRight.svelte";
+  import { login } from "$lib/login";
+  import { register } from "$lib/register";
+  import { status } from "../stores/status";
+  import { goto } from "$app/navigation";
 
   // Terrible, but enums are not supported in svelte
   const LOGIN = 0;
@@ -14,14 +18,14 @@
   let password: string;
   $: password = "";
 
-  function handleSubmit(e: SubmitEvent) {
+  async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     if (mode == LOGIN) {
-      //TODO
+      $status = await login(username, password);
+      goto("/files");
     }
-
     if (mode == LOGIN) {
-      //TODO
+      $status = await register(username, password);
     }
   }
 </script>
@@ -32,18 +36,18 @@
   <div class="mode_buttons">
     <button
       onclick={() => (mode = LOGIN)}
-      class={mode == LOGIN ? "selected" : ""}>Login</button
+      class={mode == LOGIN ? "selected" : ""}>login</button
     >
     <button
       onclick={() => (mode = REGISTER)}
-      class={mode == REGISTER ? "selected" : ""}>Register</button
+      class={mode == REGISTER ? "selected" : ""}>register</button
     >
   </div>
 
   <form onsubmit={handleSubmit} action="submit">
-    <input type="text" bind:value={username} placeholder="Username" />
-    <input type="text" bind:value={password} placeholder="Password" />
-    <button>{mode == LOGIN ? "Login" : "Register"} <ArrowRight /></button>
+    <input type="text" bind:value={username} placeholder="username" />
+    <input type="text" bind:value={password} placeholder="password" />
+    <button>{mode == LOGIN ? "login" : "register"} <ArrowRight /></button>
   </form>
 </div>
 
