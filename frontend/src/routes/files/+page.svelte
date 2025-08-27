@@ -4,7 +4,7 @@
   import type { File } from "$lib/types";
 import { API_URL } from '$lib/config'
 
-  let files: File[];
+  let files: File[] = [];
   onMount(async () => {
     files = await get_files();
     console.log(files);
@@ -15,6 +15,10 @@ import { API_URL } from '$lib/config'
   {#each files as file}
     <a href={API_URL + "/files/" + file.ID} download>{file.Filename}</a>
   {/each}
+
+  {#if files.length == 0}
+    <p>no files</p>
+  {/if}
 </div>
 
 <style>
