@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { has_cookie } from "$lib/has_cookie";
+  import ArrowRight from "../icons/ArrowRight.svelte";
 
   // Terrible, but enums are not supported in svelte
   const LOGIN = 0;
@@ -14,7 +14,8 @@
   let password: string;
   $: password = "";
 
-  function handleSubmit() {
+  function handleSubmit(e: SubmitEvent) {
+    e.preventDefault();
     if (mode == LOGIN) {
       //TODO
     }
@@ -26,18 +27,23 @@
 </script>
 
 <!-- going to do some sort of tabbed auth thing -->
-<!-- move this to a component after dev -->
 
 <div class="wrapper">
-  <div class="buttons">
-    <button onclick={() => mode = LOGIN} class={mode == LOGIN ? 'selected' : ''}>login</button>
-    <button onclick={() => mode = REGISTER} class={mode == REGISTER ? 'selected' : ''}>register</button>
+  <div class="mode_buttons">
+    <button
+      onclick={() => (mode = LOGIN)}
+      class={mode == LOGIN ? "selected" : ""}>Login</button
+    >
+    <button
+      onclick={() => (mode = REGISTER)}
+      class={mode == REGISTER ? "selected" : ""}>Register</button
+    >
   </div>
 
   <form onsubmit={handleSubmit} action="submit">
-    <input type="text" bind:value={username} placeholder="username" />
-    <input type="text" bind:value={password} placeholder="password" />
-    <button>submit</button>
+    <input type="text" bind:value={username} placeholder="Username" />
+    <input type="text" bind:value={password} placeholder="Password" />
+    <button>{mode == LOGIN ? "Login" : "Register"} <ArrowRight /></button>
   </form>
 </div>
 
@@ -50,42 +56,47 @@
     width: min-content;
     background-color: var(--bg2);
     border: 0.1em solid var(--border);
-    border-radius: 1em;
+    border-radius: 0.5em;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 1em;
   }
   form > input {
-    border-bottom: 0.1em solid var(--text);
+    color: var(--text);
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+    background-color: var(--bg3);
+    border: 0.1em solid var(--border);
   }
-
   form > button {
     color: var(--text);
     padding: 0.25em 0.5em;
     border-radius: 0.25em;
-    margin-top: 0.5em;
     background-color: var(--bg3);
     border: 0.1em solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .buttons {
+  .mode_buttons {
     display: flex;
   }
-  .buttons > button {
-    background-color: var(--bg);
+  .mode_buttons > button {
+    background-color: var(--bg2);
     border: 0.1em solid var(--border);
     color: var(--text);
     padding: 0.25em 0.5em;
     border-radius: 0.5em 0 0 0.5em;
   }
-  .buttons :last-child {
+  .mode_buttons :last-child {
     border-radius: 0 0.5em 0.5em 0;
     border-left: none;
   }
-  .buttons .selected {
+  .mode_buttons .selected {
     background-color: var(--bg3);
   }
 </style>

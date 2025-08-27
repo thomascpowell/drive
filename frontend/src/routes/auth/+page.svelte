@@ -1,7 +1,7 @@
 <script>
-  import AuthModal from "../../components/AuthModal.svelte";
+  import AuthForm from "../../components/AuthForm.svelte";
 </script>
 
 <div>
-  <AuthModal />
+  <AuthForm />
 </div>

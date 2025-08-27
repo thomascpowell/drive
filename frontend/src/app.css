@@ -54,3 +54,11 @@ p,
 a {
   font-weight: 300
 }
+
+a, button {
+  cursor: pointer;
+}
+
+
+
+
