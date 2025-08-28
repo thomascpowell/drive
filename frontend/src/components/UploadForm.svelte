@@ -3,11 +3,18 @@
   import { upload } from "$lib/upload";
   import ArrowRight from "../icons/ArrowRight.svelte";
   import Upload from "../icons/Upload.svelte";
+  import File from "./File.svelte";
 
-  let filename: string = "no file selected";
+  let fileInput: HTMLInputElement;
+  $: filename = file?.name ?? "no file selected";
   let file: File | null = null;
-  let files: FileList | null = null;
-  $: file = files?.[0] ?? null;
+
+  function handleChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    let selected: File | null = target.files?.[0] ?? null;
+    console.log(target.files?.[0] ?? null);
+    file = selected;
+  }
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
@@ -18,12 +25,22 @@
     res = await upload(file as File);
     console.log(res);
   }
+
+  async function handleClick() {
+    fileInput.click();
+  }
 </script>
 
 <form on:submit={handleSubmit}>
   <div class="file">
-    <input type="file" id="file" />
-    <button type="button"><Upload /></button>
+    <input type="file" on:change={handleChange} bind:this={fileInput} />
+    <button on:click={handleClick} type="button">
+      {#if file == null}
+        <Upload />
+      {:else}
+        <File />
+      {/if}
+    </button>
     <span>{filename}</span>
   </div>
   <button type="submit" disabled={!file}>upload <ArrowRight /></button>
@@ -52,6 +69,7 @@
     display: flex;
     align-items: center;
     padding: 0.25em 0.5em;
+    color: var(--text2);
     border-top: 0.1em solid var(--border);
     width: 100%;
     overflow: hidden;
