@@ -30,8 +30,6 @@
   }
 </script>
 
-<!-- going to do some sort of tabbed auth thing -->
-
 <div class="wrapper">
   <div class="mode_buttons">
     <button
