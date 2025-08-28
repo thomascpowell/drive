@@ -3,7 +3,7 @@
   import { upload } from "$lib/upload";
   import ArrowRight from "../icons/ArrowRight.svelte";
   import Upload from "../icons/Upload.svelte";
-  import File from "./File.svelte";
+  import FileIcon from "../icons/FileIcon.svelte";
 
   let fileInput: HTMLInputElement;
   $: filename = file?.name ?? "no file selected";
@@ -38,7 +38,7 @@
       {#if file == null}
         <Upload />
       {:else}
-        <File />
+        <FileIcon />
       {/if}
     </button>
     <span>{filename}</span>

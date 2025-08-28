@@ -23,9 +23,11 @@
     if (mode == LOGIN) {
       $status = await login(username, password);
       goto("/files");
+      return
     }
     if (mode == LOGIN) {
       $status = await register(username, password);
+      return
     }
   }
 </script>
