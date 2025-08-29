@@ -23,14 +23,14 @@
     if (mode == LOGIN) {
       $status = await login(username, password);
       goto("/files");
+      return
     }
     if (mode == LOGIN) {
       $status = await register(username, password);
+      return
     }
   }
 </script>
-
-<!-- going to do some sort of tabbed auth thing -->
 
 <div class="wrapper">
   <div class="mode_buttons">
