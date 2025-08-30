@@ -40,8 +40,7 @@
     padding: 0.5em;
     background-color: var(--bg2);
     display: grid;
-    grid-template-columns: 7fr 3fr 1fr;
-    margin: 0;
+    grid-template-columns: 9fr 3fr 1fr;
   }
 
   .line > * {
@@ -51,21 +50,19 @@
     min-width: 0;  
     white-space: nowrap;
   }
-
   .line > :last-child {
     justify-content: flex-end;
   }
   .line > :nth-last-child(2) {
     justify-content: flex-start;
   }
+
   a,
   p {
     direction: rtl;
     display: flex;
     align-items: center;
-    height: min-content;
     text-decoration: none;
-    min-width: 0;
     overflow: hidden!important;
     max-width: 10em;
     white-space: nowrap;
