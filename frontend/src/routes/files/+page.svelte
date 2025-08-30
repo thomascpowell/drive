@@ -2,9 +2,10 @@
   import { onMount } from "svelte";
   import { get_files } from "$lib/get_files";
   import type { File } from "$lib/types";
-import { API_URL } from '$lib/config'
+  import FileList from "../../components/FileList.svelte";
 
   let files: File[] = [];
+
   onMount(async () => {
     files = await get_files();
     console.log(files);
@@ -12,12 +13,10 @@ import { API_URL } from '$lib/config'
 </script>
 
 <div>
-  {#each files as file}
-    <a href={API_URL + "/files/" + file.ID} download>{file.Filename}</a>
-  {/each}
-
   {#if files.length == 0}
     <p>no files</p>
+  {:else}
+    <FileList {files} />
   {/if}
 </div>
 

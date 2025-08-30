@@ -1,6 +1,7 @@
 <svg
-  width="40"
-  height="40"
+  style={$$restProps.style || ""}
+  width="2em"
+  height="2em"
   viewBox="0 0 15 15"
   fill="none"
   xmlns="http://www.w3.org/2000/svg"
