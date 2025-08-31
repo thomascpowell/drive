@@ -1,12 +1,15 @@
 <script>
+  import { page } from "$app/state";
   import NavLink from "./NavLink.svelte";
 </script>
 
-<div>
-  <NavLink href="/files">files</NavLink>
-  <NavLink href="/upload">upload</NavLink>
-  <NavLink href="/logout">logout</NavLink>
-</div>
+{#if page.url.pathname !== "/"}
+  <div>
+    <NavLink href="/logout">auth</NavLink>
+    <NavLink href="/files">files</NavLink>
+    <NavLink href="/upload">upload</NavLink>
+  </div>
+{/if}
 
 <style>
   div {
