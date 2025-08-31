@@ -22,7 +22,7 @@
         <a href={API_URL + "/files/" + file.ID} download> {file.Filename} </a>
       </div>
       <div>
-        <p>{file.UploadedAt.substring(0, 10)}</p>
+        <p>{file.UploadedAt.substring(5, 10)}</p>
       </div>
       <div>
         <a href="/todo"><Trash style="transform: scale(0.6)" /></a>
@@ -40,7 +40,7 @@
     padding: 0.5em;
     background-color: var(--bg2);
     display: grid;
-    grid-template-columns: 9fr 3fr 1fr;
+    grid-template-columns: 9fr 2fr 1fr;
   }
 
   .line > * {
