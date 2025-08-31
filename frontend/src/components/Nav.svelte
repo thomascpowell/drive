@@ -3,12 +3,10 @@
 </script>
 
 <div>
-  <NavLink href="/">home</NavLink>
-  <NavLink href="/upload">upload</NavLink>
   <NavLink href="/files">files</NavLink>
+  <NavLink href="/upload">upload</NavLink>
   <NavLink href="/logout">logout</NavLink>
 </div>
-<slot />
 
 <style>
   div {
