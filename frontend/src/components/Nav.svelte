@@ -1,15 +1,12 @@
 <script>
-    import NavLink from "./NavLink.svelte";
-
+  import NavLink from "./NavLink.svelte";
 </script>
 
 <div>
-  <NavLink href="/">home</NavLink>
-  <NavLink href="/upload">upload</NavLink>
   <NavLink href="/files">files</NavLink>
+  <NavLink href="/upload">upload</NavLink>
   <NavLink href="/logout">logout</NavLink>
 </div>
-<slot />
 
 <style>
   div {
@@ -18,6 +15,4 @@
     align-items: center;
     gap: 1em;
   }
-
-  
 </style>

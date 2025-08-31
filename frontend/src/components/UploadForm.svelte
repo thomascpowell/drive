@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Res } from "$lib/types";
+  import type { Res } from "$lib/utils/types";
   import { upload } from "$lib/upload";
   import ArrowRight from "../icons/ArrowRight.svelte";
   import Upload from "../icons/Upload.svelte";

@@ -1,9 +1,9 @@
 <script lang="ts">
   import "../app.css";
-  import Nav from "../components/Nav.svelte";
+    import Nav from "../components/Nav.svelte";
 </script>
 
-<Nav />
+<Nav/>
 <div class="inner">
   <slot />
 </div>

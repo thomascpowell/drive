@@ -1,5 +1,5 @@
-import { API_URL } from '$lib/config'
-import type { Res, File } from '$lib/types'
+import { API_URL } from '$lib/utils/config'
+import type { Res, File } from '$lib/utils/types'
 
 export async function get_files(): Promise<File[]> {
   const ENDPOINT = API_URL + "/files"
