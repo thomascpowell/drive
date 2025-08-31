@@ -1,6 +1,5 @@
 <script>
-    import NavLink from "./NavLink.svelte";
-
+  import NavLink from "./NavLink.svelte";
 </script>
 
 <div>
@@ -18,6 +17,4 @@
     align-items: center;
     gap: 1em;
   }
-
-  
 </style>

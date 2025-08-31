@@ -1,5 +1,5 @@
-import { API_URL } from "./config";
-import type { Res } from '$lib/types'
+import { API_URL } from "./utils/config";
+import type { Res } from '$lib/utils/types'
 
 export async function upload(file: File): Promise<Res> {
   const ENDPOINT = API_URL + "/upload"

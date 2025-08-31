@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { API_URL } from "$lib/config";
-  import type { File } from "$lib/types";
-  import Download from "../icons/Download.svelte";
+  import { API_URL } from "$lib/utils/config";
+  import type { File } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
 

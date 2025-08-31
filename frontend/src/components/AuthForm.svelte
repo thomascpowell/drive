@@ -60,11 +60,13 @@
     width: min-content;
     background-color: var(--bg2);
     border: 0.1em solid var(--border);
+    width: 20em;
     border-radius: 0.5em;
   }
 
   form {
     display: flex;
+    max-width: 100%;
     flex-direction: column;
     gap: 1em;
   }

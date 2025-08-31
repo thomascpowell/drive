@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation'
-import { API_URL } from './config'
+import { API_URL } from './utils/config'
 
 export async function logout() {
   const endpoint = `${API_URL}/logout`

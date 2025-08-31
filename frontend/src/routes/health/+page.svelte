@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { checkHealth } from "$lib/health";
-  import type { Res } from "$lib/types";
+  import type { Res } from "$lib/utils/types";
 
   let health = "unknown";
 
