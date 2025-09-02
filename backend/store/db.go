@@ -1,10 +1,12 @@
 package store
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/thomascpowell/drive/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
 )
 
 type StoreInterface interface {
@@ -69,5 +71,6 @@ func (s *Store) GetFilesByUserID(userID uint) ([]models.File, error) {
 }
 
 func (s *Store) DeleteFileByID(id uint) error {
+	fmt.Println("reached db handler") //reaches this
 	return s.DB.Delete(&models.File{}, id).Error
 }

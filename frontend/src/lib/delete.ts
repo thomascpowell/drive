@@ -10,5 +10,6 @@ export async function deleteFile(fileID: number): Promise<Res> {
     },
   })
   const data = await res.json();
+  console.log(data);
   return data
 }

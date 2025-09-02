@@ -246,17 +246,17 @@ func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		deleteFileJob := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.DeleteFile,
-			Payload: models.NewDeleteFilePayload(fileID, userID.(uint)), 
+			Payload: models.NewDeleteFilePayload(userID.(uint), fileID), 
 			// NOTE: userID is currently not checked in the job
 			// It is checked in this handler for now
 			Done:    make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(deleteFileJob)
-		result = <-getFileJob.Done
-		if result.Err != nil {
+		result2 := <-deleteFileJob.Done
+		if result2.Err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
 			return
 		}
-		ctx.JSON(http.StatusAccepted, gin.H{"message": "file deleted successfully"})
+		ctx.JSON(http.StatusOK, gin.H{"message": "file deleted successfully"})
 	}
 }

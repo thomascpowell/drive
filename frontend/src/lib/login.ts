@@ -13,7 +13,6 @@ export async function login(username: string, password: string): Promise<Res> {
     body: creds,
   })
 
- 
   const data = await res.json();
   return data
 }
