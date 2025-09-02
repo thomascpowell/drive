@@ -6,11 +6,11 @@
 - Soon: File sharing
 
 ### Frontend Stack:
-- TypeScript, Svelte, SvelteKit, SSG
-- Vite
+- TypeScript
+- Vite, Svelte, SvelteKit
 - CSS
 
 ### Backend Stack: 
-- Go, Gin, GORM, SQLite, Golang-JWT
-- Docker
-- Nginx
+- Golang
+- Gin, GORM, SQLite
+- Docker, Nginx
