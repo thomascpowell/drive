@@ -20,15 +20,16 @@
 
   async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
-    if (mode == LOGIN) {
-      $status = await login(username, password);
-      goto("/files");
-      return
-    }
-    if (mode == LOGIN) {
+    if (mode == REGISTER) {
       $status = await register(username, password);
-      return
+      return;
     }
+
+    $status = await login(username, password);
+    if ($status.message) {
+      goto("/files")
+    }
+    return;
   }
 </script>
 

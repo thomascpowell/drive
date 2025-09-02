@@ -1,18 +1,15 @@
 import { API_URL } from '$lib/utils/config'
 import type { Res } from '$lib/utils/types'
 
-export async function login(username: string, password: string): Promise<Res> {
-  const creds = JSON.stringify({ username, password })
-  const endpoint = `${API_URL}/login`
-
+export async function deleteFile(fileID: number): Promise<Res> {
+  const endpoint = `${API_URL}/files/${fileID}`
   const res = await fetch(endpoint, {
-    method: 'post',
+    method: 'delete',
     headers: {
       'content-type': 'application/json'
     },
-    body: creds,
   })
-
   const data = await res.json();
+  console.log(data);
   return data
 }

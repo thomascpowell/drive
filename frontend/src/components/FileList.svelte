@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { deleteFile } from "$lib/delete";
   import { API_URL } from "$lib/utils/config";
   import type { File } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
@@ -25,7 +26,7 @@
           <p>{file.UploadedAt.substring(5, 10)}</p>
         </div>
         <div>
-          <a href="/todo"><Trash style="transform: scale(0.6)" /></a>
+          <button on:click={() => deleteFile(file.ID)}><Trash style="transform: scale(0.6)" /></button>
         </div>
       </div>
     {/each}
@@ -78,8 +79,7 @@
     justify-content: flex-start;
   }
 
-  a,
-  p {
+  a, p, button {
     direction: rtl;
     display: flex;
     align-items: center;
