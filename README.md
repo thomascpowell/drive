@@ -1,14 +1,16 @@
-## WIP: Selfhosted file storage server.
+## Selfhosted file storage server.
 
 ### Features:
-- This is where I'll list all the features after I finish them 
+- Secure authentication
+- Upload, download and delete files
+- Soon: File sharing
 
 ### Frontend Stack:
-- Svelte, SvelteKit, SSG
-- TypeScript
+- TypeScript, Svelte, SvelteKit, SSG
+- Vite
 - CSS
 
 ### Backend Stack: 
-- Go, Gin, GORM, SQLite
+- Go, Gin, GORM, SQLite, Golang-JWT
 - Docker
 - Nginx

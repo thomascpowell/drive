@@ -4,7 +4,10 @@
   import type { File } from "$lib/utils/types";
   import FileList from "../../components/FileList.svelte";
 
-  let files: File[] = [];
+  let files: File[]
+  $: files = []; 
+  // TODO: move files to a store so that they can be updated by delete (e.g. trigger refresh)
+  // can also manually update list instead of fully refreshing serverside
 
   onMount(async () => {
     files = await get_files();
