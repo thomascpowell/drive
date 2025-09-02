@@ -1,4 +1,4 @@
-## Selfhosted file storage server.
+## Drive
 
 ### Features:
 - Secure authentication
