@@ -4,6 +4,7 @@
   import ArrowRight from "../icons/ArrowRight.svelte";
   import Upload from "../icons/Upload.svelte";
   import FileIcon from "../icons/FileIcon.svelte";
+  import { goto } from "$app/navigation";
 
   let fileInput: HTMLInputElement;
   $: filename = file?.name ?? "no file selected";
@@ -24,6 +25,7 @@
     }
     res = await upload(file as File);
     console.log(res);
+    goto("/files"); // TODO: would be better to reset the form
   }
 
   async function handleClick() {
