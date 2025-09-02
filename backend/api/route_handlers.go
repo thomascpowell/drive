@@ -2,13 +2,15 @@ package api
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/thomascpowell/drive/jobs"
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/utils"
-	"net/http"
-	"path/filepath"
-	"strings"
 )
 
 func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
@@ -180,7 +182,7 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		}
 		filePath := filepath.Join(basePath, file.Path)
 		ctx.Header("Content-Disposition", `attachment; filename="`+file.Filename+`"`)
-		ctx.Header("Content-Type", "application/octet-stream") 
+		ctx.Header("Content-Type", "application/octet-stream")
 		ctx.File(filePath)
 	}
 }
@@ -201,6 +203,60 @@ func handleLogout(ctx *gin.Context) {
 
 func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// TODO
+		userID, ok := ctx.Get("sub")
+		if !ok {
+			return
+		}
+		fileID, ok := GetSlug(ctx, "id")
+		if !ok {
+			return
+		}
+		getFileJob := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.GetFile,
+			Payload: models.NewGetFilePayload(fileID),
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(getFileJob)
+		result := <-getFileJob.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+			return
+		}
+		fileptr, ok := result.Value.(*models.File)
+		if !ok {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid job result type"})
+			return
+		}
+		file := *fileptr
+		if file.UploadedBy != userID {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "user may not delete this file"})
+		}
+		basePath, err := utils.GetFilePath()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		filePath := filepath.Join(basePath, file.Path)
+		err = os.Remove(filePath)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		deleteFileJob := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.DeleteFile,
+			Payload: models.NewDeleteFilePayload(fileID, userID.(uint)), 
+			// NOTE: userID is currently not checked in the job
+			// It is checked in this handler for now
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(deleteFileJob)
+		result = <-getFileJob.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusAccepted, gin.H{"message": "file deleted successfully"})
 	}
 }
