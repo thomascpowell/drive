@@ -4,7 +4,7 @@
   import type { File } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
-    import { status } from "../stores/status";
+  import { status } from "../stores/status";
 
   export let files: File[];
 
