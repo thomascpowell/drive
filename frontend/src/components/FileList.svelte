@@ -1,11 +1,16 @@
 <script lang="ts">
-    import { deleteFile } from "$lib/delete";
+  import { deleteFile } from "$lib/delete";
   import { API_URL } from "$lib/utils/config";
   import type { File } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
+    import { status } from "../stores/status";
 
   export let files: File[];
+
+  async function del(fileID: number) {
+    $status = await deleteFile(fileID);
+  }
 </script>
 
 <div class="wrapper">
@@ -26,7 +31,9 @@
           <p>{file.UploadedAt.substring(5, 10)}</p>
         </div>
         <div>
-          <button on:click={() => deleteFile(file.ID)}><Trash style="transform: scale(0.6)" /></button>
+          <button on:click={() => del(file.ID)}
+            ><Trash style="transform: scale(0.6)" /></button
+          >
         </div>
       </div>
     {/each}
@@ -79,7 +86,9 @@
     justify-content: flex-start;
   }
 
-  a, p, button {
+  a,
+  p,
+  button {
     direction: rtl;
     display: flex;
     align-items: center;

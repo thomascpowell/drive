@@ -5,6 +5,7 @@
   import Upload from "../icons/Upload.svelte";
   import FileIcon from "../icons/FileIcon.svelte";
   import { goto } from "$app/navigation";
+    import { status } from "../stores/status";
 
   let fileInput: HTMLInputElement;
   $: filename = file?.name ?? "no file selected";
@@ -23,8 +24,7 @@
     if (file == null) {
       return;
     }
-    res = await upload(file as File);
-    console.log(res);
+    $status = await upload(file as File);
     goto("/files"); // TODO: would be better to reset the form
   }
 

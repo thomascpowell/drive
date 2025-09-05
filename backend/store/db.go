@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/thomascpowell/drive/models"
