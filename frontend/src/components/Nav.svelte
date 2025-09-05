@@ -5,9 +5,9 @@
 
 {#if page.url.pathname !== "/"}
   <div>
-    <NavLink href="/logout">auth</NavLink>
     <NavLink href="/files">files</NavLink>
     <NavLink href="/upload">upload</NavLink>
+    <NavLink href="/logout">log out</NavLink>
   </div>
 {/if}
 
