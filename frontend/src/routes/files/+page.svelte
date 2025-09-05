@@ -11,7 +11,6 @@
 
   onMount(async () => {
     files = await get_files();
-    console.log(files);
   });
 </script>
 
