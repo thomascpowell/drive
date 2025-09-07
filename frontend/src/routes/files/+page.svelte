@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { get_files } from "$lib/get_files";
-  import type { File } from "$lib/utils/types";
   import { files } from "../../stores/files"
   import FileList from "../../components/FileList.svelte";
   
