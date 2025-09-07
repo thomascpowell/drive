@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fade } from "svelte/transition";
+  import { fade } from "svelte/transition";
   import Check from "../icons/Check.svelte";
   import Warn from "../icons/Warn.svelte";
   import { status } from "../stores/status";

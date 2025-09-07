@@ -2,23 +2,19 @@
   import { onMount } from "svelte";
   import { get_files } from "$lib/get_files";
   import type { File } from "$lib/utils/types";
+  import { files } from "../../stores/files"
   import FileList from "../../components/FileList.svelte";
-
-  let files: File[]
-  $: files = []; 
-  // TODO: move files to a store so that they can be updated by delete (e.g. trigger refresh)
-  // can also manually update list instead of fully refreshing serverside
-
+  
   onMount(async () => {
-    files = await get_files();
+    $files = await get_files();
   });
 </script>
 
 <div>
-  {#if files.length == 0}
+  {#if $files.length == 0}
     <p>no files</p>
   {:else}
-    <FileList {files} />
+    <FileList file_list={$files} />
   {/if}
 </div>
 

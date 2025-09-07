@@ -4,12 +4,18 @@
   import type { File } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
+  import { files } from "../stores/files"
   import { status } from "../stores/status";
 
-  export let files: File[];
+  export let file_list: File[];
 
   async function del(fileID: number) {
-    $status = await deleteFile(fileID);
+    let res = await deleteFile(fileID);
+    $status = res;
+
+    if (res.message) {
+      files.update((current) => current.filter((f: File) => f.ID !== fileID));
+    }
   }
 </script>
 
@@ -21,7 +27,7 @@
   </div>
 
   <div class="files">
-    {#each files as file}
+    {#each file_list as file}
       <div class="line">
         <div>
           <FileIcon style="transform: scale(0.6)" />
