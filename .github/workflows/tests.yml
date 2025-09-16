@@ -1,4 +1,4 @@
-name: Backend Tests
+name: Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  Backend Tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -17,6 +17,16 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.24'
+
+    - name: Cache 
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('backend/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
 
     - name: Test
       working-directory: ./backend
