@@ -1,16 +1,29 @@
-## Drive
+# Drive
+Fullstack file storage server with Dropbox-like functionality.
 
-### Features:
-- Secure authentication
-- Upload, download and delete files
-- Soon: File sharing
+[![Tests](https://github.com/thomascpowell/drive/actions/workflows/tests.yml/badge.svg)](https://github.com/thomascpowell/drive/actions/workflows/tests.yml)
 
-### Frontend Stack:
-- TypeScript
-- Vite, Svelte, SvelteKit
-- CSS
+## Features
+- File management operations (upload, download, delete)
+- Clean UI with secure authentication (JWT)
+- Planned: Link-based file sharing
 
-### Backend Stack: 
-- Golang
-- Gin, GORM, SQLite
-- Docker, Nginx
+## Stack
+- Frontend: SvelteKit (TypeScript) with Vite
+- Backend: Go (Gin, GORM, SQLite)
+- Deployment: Docker, Nginx
+
+## Usage
+```sh
+# Backend
+cd backend
+go run *.go
+
+# Frontend
+cd frontend
+npm install
+npm run dev
+
+# Docker
+docker-compose up --build
+```
