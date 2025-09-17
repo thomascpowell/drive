@@ -1,5 +1,5 @@
-import { API_URL } from '$lib/config'
-import type { Res } from '$lib/types'
+import { API_URL } from '$lib/utils/config'
+import type { Res } from '$lib/utils/types'
 
 export async function checkHealth(): Promise<Res> {
   try {
