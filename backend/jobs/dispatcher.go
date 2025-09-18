@@ -4,16 +4,17 @@ import (
 	"errors"
 	"fmt"
 	"github.com/thomascpowell/drive/models"
+	"github.com/thomascpowell/drive/redis"
 	"github.com/thomascpowell/drive/store"
 )
 
 type Dispatcher struct {
 	JobQueue chan *models.Job
 	Store    store.StoreInterface
-	RC       store.RedisInterface
+	RC       redis.RedisInterface
 }
 
-func NewDispatcher(store store.StoreInterface, rc store.RedisInterface, size int) *Dispatcher {
+func NewDispatcher(store store.StoreInterface, rc redis.RedisInterface, size int) *Dispatcher {
 	dispatcher := Dispatcher{
 		JobQueue: make(chan *models.Job, size),
 		Store:    store,
