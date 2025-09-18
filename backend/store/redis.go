@@ -1,21 +1,54 @@
 package store
 
 import (
+	"context"
+	"time"
+
 	"github.com/redis/go-redis/v9"
 )
 
-type RDB struct {
+type RC struct {
+	// ^ stands for Redis Connection
+	// probably a bad name ngl
 	Client *redis.Client
 }
 
-func NewRDB(Addr string) RDB {
+func NewRDB(Addr string) RC {
 	rdb := redis.NewClient(&redis.Options{
 		Addr: Addr,
 	})
 
-	return RDB {
+	return RC{
 		Client: rdb,
 	}
 }
 
-// TODO: write methods for generating share urls
+func (rc *RC) Set(key string, value string) error {
+	ctx := context.Background()
+	_, err := rc.Client.Set(ctx, key, value, 0).Result()
+	return err
+}
+
+func (rc *RC) Setex(key string, value string, ttl int) error {
+	ctx, cancel := getCTX(2)
+	defer cancel()
+	// very stupid time.Duration requirement
+	_, err := rc.Client.SetEx(ctx, key, value, time.Duration(ttl)*time.Second).Result()
+	return err
+}
+
+func (rc *RC) Get(key string) (string, error) {
+	ctx := context.Background()
+	return rc.Client.Get(ctx, key).Result()
+}
+
+func (rc *RC) TTL(key string, value string) (string, error) {
+	ctx := context.Background()
+	dur, err := rc.Client.TTL(ctx, key).Result()
+	return dur.String(), err
+}
+
+ 
+func getCTX(expire int) (context.Context, context.CancelFunc) {
+	return context.WithTimeout(context.Background(), time.Duration(expire)*time.Second)
+}
