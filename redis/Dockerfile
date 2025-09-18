@@ -1,11 +1,9 @@
 # This project uses my Rust Redis clone
-# It is functionally similar enough that they
-# they're interchangable for simple use cases like this
+# They are interchangable in this project
+# The backend uses the offical redis-go client
 
 FROM rust:1.89 AS builder
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
-
 RUN git clone https://github.com/thomascpowell/redis.git .
 RUN cargo build --release
 
