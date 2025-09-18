@@ -1,4 +1,4 @@
-package store
+package redis
 
 import (
 	"context"
@@ -7,29 +7,35 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-type RC struct {
+type RedisInterface interface {
+	Set(key string, value string) error
+}
+var _ RedisInterface = (*Redis)(nil)
+
+
+type Redis struct {
 	// ^ stands for Redis Connection
 	// probably a bad name ngl
 	Client *redis.Client
 }
 
-func NewRDB(Addr string) RC {
+func NewRedis(Addr string) Redis {
 	rdb := redis.NewClient(&redis.Options{
 		Addr: Addr,
 	})
 
-	return RC{
+	return Redis{
 		Client: rdb,
 	}
 }
 
-func (rc *RC) Set(key string, value string) error {
+func (rc *Redis) Set(key string, value string) error {
 	ctx := context.Background()
 	_, err := rc.Client.Set(ctx, key, value, 0).Result()
 	return err
 }
 
-func (rc *RC) Setex(key string, value string, ttl int) error {
+func (rc *Redis) Setex(key string, value string, ttl int) error {
 	ctx, cancel := getCTX(2)
 	defer cancel()
 	// very stupid time.Duration requirement
@@ -37,12 +43,12 @@ func (rc *RC) Setex(key string, value string, ttl int) error {
 	return err
 }
 
-func (rc *RC) Get(key string) (string, error) {
+func (rc *Redis) Get(key string) (string, error) {
 	ctx := context.Background()
 	return rc.Client.Get(ctx, key).Result()
 }
 
-func (rc *RC) TTL(key string, value string) (string, error) {
+func (rc *Redis) TTL(key string, value string) (string, error) {
 	ctx := context.Background()
 	dur, err := rc.Client.TTL(ctx, key).Result()
 	return dur.String(), err

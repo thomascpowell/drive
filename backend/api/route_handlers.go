@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
 	"github.com/gin-gonic/gin"
 	"github.com/thomascpowell/drive/jobs"
 	"github.com/thomascpowell/drive/models"
@@ -246,10 +245,10 @@ func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		deleteFileJob := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.DeleteFile,
-			Payload: models.NewDeleteFilePayload(userID.(uint), fileID), 
+			Payload: models.NewDeleteFilePayload(userID.(uint), fileID),
 			// NOTE: userID is currently not checked in the job
 			// It is checked in this handler for now
-			Done:    make(chan models.Result, 1),
+			Done: make(chan models.Result, 1),
 		}
 		dispatcher.Dispatch(deleteFileJob)
 		result2 := <-deleteFileJob.Done

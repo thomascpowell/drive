@@ -10,12 +10,14 @@ import (
 type Dispatcher struct {
 	JobQueue chan *models.Job
 	Store    store.StoreInterface
+	RC       store.RedisInterface
 }
 
-func NewDispatcher(store store.StoreInterface, size int) *Dispatcher {
+func NewDispatcher(store store.StoreInterface, rc store.RedisInterface, size int) *Dispatcher {
 	dispatcher := Dispatcher{
 		JobQueue: make(chan *models.Job, size),
 		Store:    store,
+		RC: 			rc,
 	}
 	return &dispatcher
 }

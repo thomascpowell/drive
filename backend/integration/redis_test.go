@@ -4,12 +4,13 @@ import (
 	"context"
 	"testing"
 	"time"
-	"github.com/thomascpowell/drive/store"
+
+	"github.com/thomascpowell/drive/redis"
 	"github.com/thomascpowell/drive/utils"
 )
 
 func TestRedisConnection(t *testing.T) {
-	rdb := store.NewRDB("localhost:6379")
+	rdb := redis.NewRedis(utils.GetRedisURL()+":6379")
 
 	// test general function
 	ctx := context.Background()
