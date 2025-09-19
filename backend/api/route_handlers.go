@@ -14,6 +14,54 @@ import (
 	"github.com/thomascpowell/drive/utils"
 )
 
+func handleGetSharedFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		key, ok := GetSlug(ctx, "key")
+		if !ok {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
+			return
+		}
+
+		// holy type conversions
+		str_id, err := dispatcher.Redis.Get(fmt.Sprintf("%d", key))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
+		}
+		int_id, err := strconv.Atoi(str_id)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
+		}
+		uint_id := uint(int_id)
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.GetFile,
+			Payload: models.NewGetFilePayload(uint_id),
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+
+		result := <-job.Done
+		if result.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+		}
+		fileptr, ok := result.Value.(*models.File)
+		if !ok {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid job result type"})
+			return
+		}
+		file := *fileptr
+		basePath, err := utils.GetFilePath()
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		filePath := filepath.Join(basePath, file.Path)
+		ctx.Header("Content-Disposition", `attachment; filename="`+file.Filename+`"`)
+		ctx.Header("Content-Type", "application/octet-stream")
+		ctx.File(filePath)
+	}
+}
+
 func handleGetShareLink(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var req models.ShareRequest
@@ -33,7 +81,7 @@ func handleGetShareLink(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		ttl := uint(raw)
 		job := &models.Job{
 			ID:      utils.UUID(),
-			Type:    models.AuthenticateUser,
+			Type:    models.GetShareLink,
 			Payload: models.NewGetShareLinkPayload(fileID, ttl),
 			Done:    make(chan models.Result, 1),
 		}
@@ -188,6 +236,7 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		}
 		fileID, ok := GetSlug(ctx, "id")
 		if !ok {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
 			return
 		}
 		job := &models.Job{
