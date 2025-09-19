@@ -4,7 +4,6 @@ import (
 	"os"
 )
 
-// used for cookies
 func GetFrontendURL() string {
 	env := os.Getenv("FE_URL")
 		// env is unset -> no docker -> dev

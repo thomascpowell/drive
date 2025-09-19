@@ -5,12 +5,48 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/thomascpowell/drive/jobs"
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/utils"
 )
+
+func handleGetShareLink(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var req models.ShareRequest
+		if err := ctx.ShouldBindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+			return
+		}
+		raw, err := strconv.Atoi(req.FileID)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
+		}
+		fileID := uint(raw)
+		raw, err = strconv.Atoi(req.TTL)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
+		}
+		ttl := uint(raw)
+		job := &models.Job{
+			ID:      utils.UUID(),
+			Type:    models.AuthenticateUser,
+			Payload: models.NewGetShareLinkPayload(fileID, ttl),
+			Done:    make(chan models.Result, 1),
+		}
+		dispatcher.Dispatch(job)
+		link := <-job.Done
+		if link.Err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": link.Err.Error()})
+			return
+		}
+		res := utils.GetFrontendURL() + "/share/" + link.Value.(string)
+		ctx.JSON(http.StatusOK, gin.H{"message": res})
+	}
+}
 
 func handleAuth(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {

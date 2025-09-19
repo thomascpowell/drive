@@ -61,6 +61,15 @@ type RegisterUserPayload struct {
 
 type AuthenticateUserPayload = Credentials
 
+func NewGetShareLinkPayload(fileID uint, ttl uint) *Payload {
+	return &Payload{
+		GetShareLink: GetShareLinkPayload{
+			FileID: fileID,
+			TTL:    ttl,
+		},
+	}
+}
+
 func NewUploadPayload(file File) *Payload {
 	return &Payload{
 		Upload: UploadPayload(file),
