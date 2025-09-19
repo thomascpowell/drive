@@ -7,6 +7,10 @@ import (
 	"github.com/thomascpowell/drive/utils"
 )
 
+func (d *Dispatcher) handleGetShareLink(payload *models.GetShareLinkPayload, job *models.Job) {
+	print("hgsl")
+}
+
 func (d *Dispatcher) handleAuthenticateUser(payload *models.AuthenticateUserPayload, job *models.Job) {
 	user, err := d.Store.GetUserByUsername(payload.Username)
 	if err != nil {

@@ -76,6 +76,9 @@ func (d *Dispatcher) process(job *models.Job) {
 	case models.AuthenticateUser:
 		payload := &job.Payload.AuthenticateUser
 		d.handleAuthenticateUser(payload, job)
+	case models.GetShareLink:
+		payload := &job.Payload.GetShareLink
+		d.handleGetShareLink(payload, job)
 	default:
 		job.Done <- models.Result{Err: errors.New("unknown job type")}
 	}

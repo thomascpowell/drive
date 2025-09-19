@@ -17,6 +17,7 @@ const (
 	GetUser
 	RegisterUser
 	AuthenticateUser
+	GetShareLink
 )
 
 type Payload struct {
@@ -27,9 +28,14 @@ type Payload struct {
 	GetUser          GetUserPayload
 	RegisterUser     RegisterUserPayload
 	AuthenticateUser AuthenticateUserPayload
+	GetShareLink     GetShareLinkPayload
 }
 
 type UploadPayload = File
+
+type GetShareLinkPayload struct {
+	FileID uint
+}
 
 type GetUserFilesPayload struct {
 	UserID uint
