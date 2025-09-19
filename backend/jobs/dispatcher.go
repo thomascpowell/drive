@@ -11,14 +11,14 @@ import (
 type Dispatcher struct {
 	JobQueue chan *models.Job
 	Store    store.StoreInterface
-	RC       redis.RedisInterface
+	Redis       redis.RedisInterface
 }
 
 func NewDispatcher(store store.StoreInterface, rc redis.RedisInterface, size int) *Dispatcher {
 	dispatcher := Dispatcher{
 		JobQueue: make(chan *models.Job, size),
 		Store:    store,
-		RC: 			rc,
+		Redis: 			rc,
 	}
 	return &dispatcher
 }

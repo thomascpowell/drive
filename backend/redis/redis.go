@@ -3,19 +3,20 @@ package redis
 import (
 	"context"
 	"time"
-
 	"github.com/redis/go-redis/v9"
 )
 
 type RedisInterface interface {
 	Set(key string, value string) error
+	Setex(key string, value string, ttl int) error
+	Get(key string) (string, error)
+	TTL(key string) (string, error)
+
 }
 var _ RedisInterface = (*Redis)(nil)
 
 
 type Redis struct {
-	// ^ stands for Redis Connection
-	// probably a bad name ngl
 	Client *redis.Client
 }
 
@@ -48,13 +49,12 @@ func (rc *Redis) Get(key string) (string, error) {
 	return rc.Client.Get(ctx, key).Result()
 }
 
-func (rc *Redis) TTL(key string, value string) (string, error) {
+func (rc *Redis) TTL(key string) (string, error) {
 	ctx := context.Background()
 	dur, err := rc.Client.TTL(ctx, key).Result()
 	return dur.String(), err
 }
 
- 
 func getCTX(expire int) (context.Context, context.CancelFunc) {
 	return context.WithTimeout(context.Background(), time.Duration(expire)*time.Second)
 }

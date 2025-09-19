@@ -2,13 +2,17 @@ package jobs
 
 import (
 	"fmt"
-	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/auth"
+	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/utils"
 )
 
 func (d *Dispatcher) handleGetShareLink(payload *models.GetShareLinkPayload, job *models.Job) {
-	print("hgsl")
+	share_link := utils.UUID()
+	file := payload.FileID
+	ttl := payload.TTL
+	err := d.Redis.Setex(share_link, fmt.Sprintf("%d", file), int(ttl))
+	job.Done <- models.Result{Value: share_link, Err: err}
 }
 
 func (d *Dispatcher) handleAuthenticateUser(payload *models.AuthenticateUserPayload, job *models.Job) {

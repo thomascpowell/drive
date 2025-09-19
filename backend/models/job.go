@@ -35,6 +35,7 @@ type UploadPayload = File
 
 type GetShareLinkPayload struct {
 	FileID uint
+	TTL    uint
 }
 
 type GetUserFilesPayload struct {
