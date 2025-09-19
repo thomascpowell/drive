@@ -12,3 +12,9 @@ export interface File {
   UploadedAt: string
   UploadedBy: number
 }
+
+export interface Share {
+  FileID: number
+  TTL: number
+}
+

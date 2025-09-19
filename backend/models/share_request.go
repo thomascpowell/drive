@@ -1,6 +1,6 @@
 package models
 
 type ShareRequest struct {
-	FileID string `json:"fileid"`
-	TTL    string `json:"ttl"`
+	FileID uint `json:"FileID"`
+	TTL    uint `json:"TTL"`
 }

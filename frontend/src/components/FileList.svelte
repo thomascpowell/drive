@@ -1,10 +1,11 @@
 <script lang="ts">
   import { deleteFile } from "$lib/delete";
+  import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
-  import type { File } from "$lib/utils/types";
+  import type { File, Share } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
-  import { files } from "../stores/files"
+  import { files } from "../stores/files";
   import { status } from "../stores/status";
 
   export let file_list: File[];
@@ -17,7 +18,23 @@
       files.update((current) => current.filter((f: File) => f.ID !== fileID));
     }
   }
+  async function copy_link(fileID: number) {
+    // TODO: change to somthing either longer or user supplied
+    let TTL = 30;
+    let req: Share = {
+      FileID: fileID,
+      TTL: TTL,
+    };
+    let res = await get_share_link(req);
+    $status = res;
+    if (res.message) {
+      navigator.clipboard.writeText(res.message);
+    }
+  }
 </script>
+
+
+<!-- TODO: refactor.  -->
 
 <div class="wrapper">
   <div class="line">

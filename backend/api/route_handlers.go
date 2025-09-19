@@ -21,7 +21,7 @@ func handleGetSharedFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
 			return
 		}
-
+		// TODO: try to do somthing abt this
 		// holy type conversions
 		str_id, err := dispatcher.Redis.Get(fmt.Sprintf("%d", key))
 		if err != nil {
@@ -69,16 +69,8 @@ func handleGetShareLink(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 			return
 		}
-		raw, err := strconv.Atoi(req.FileID)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
-		}
-		fileID := uint(raw)
-		raw, err = strconv.Atoi(req.TTL)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
-		}
-		ttl := uint(raw)
+		fileID := req.FileID
+		ttl := req.TTL
 		job := &models.Job{
 			ID:      utils.UUID(),
 			Type:    models.GetShareLink,
