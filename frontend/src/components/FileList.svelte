@@ -3,7 +3,7 @@
   import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
   import type { File, Share } from "$lib/utils/types";
-    import Copy from "../icons/Copy.svelte";
+  import Copy from "../icons/Copy.svelte";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
   import { files } from "../stores/files";
@@ -49,13 +49,8 @@
           <p>{file.UploadedAt.substring(5, 10)}</p>
         </div>
         <div>
-          <button on:click={() => del(file.ID)}
-            ><Trash/></button
-          >          
-          <button on:click={() => copy_link(file.ID)}
-            ><Copy /></button
-          >
-
+          <button on:click={() => del(file.ID)}><Trash /></button>
+          <button on:click={() => copy_link(file.ID)}><Copy /></button>
         </div>
       </div>
     {/each}
@@ -85,6 +80,7 @@
   }
 
   .line {
+    flex-shrink: 0;
     width: 100%;
     display: flex;
     gap: 2em;
@@ -99,8 +95,10 @@
     display: flex;
     align-items: center;
     text-align: center;
-    min-width: 0;
     white-space: nowrap;
+  }
+  .line :first-child {
+    min-width: 0;
   }
   .line > :last-child {
     justify-content: flex-end;
@@ -122,7 +120,6 @@
     justify-content: center;
     text-decoration: none;
     gap: 1em;
-    max-width: 30vw;
     white-space: nowrap;
     overflow: hidden;
   }
