@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func GetSlug(ctx *gin.Context, param string) (uint, bool) {
+func GetSlugAsUint(ctx *gin.Context, param string) (uint, bool) {
 	idStr := ctx.Param(param)
 	idUint64, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -15,3 +15,9 @@ func GetSlug(ctx *gin.Context, param string) (uint, bool) {
 	}
 	return uint(idUint64), true
 }
+
+func GetSlugAsString(ctx *gin.Context, param string) (string, bool) {
+	idStr := ctx.Param(param)
+	return idStr, true
+}
+

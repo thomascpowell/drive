@@ -16,14 +16,14 @@ import (
 
 func handleGetSharedFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		key, ok := GetSlug(ctx, "key")
+		key, ok := GetSlugAsString(ctx, "key")
 		if !ok {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
 			return
 		}
 		// TODO: try to do somthing abt this
 		// holy type conversions
-		str_id, err := dispatcher.Redis.Get(fmt.Sprintf("%d", key))
+		str_id, err := dispatcher.Redis.Get(key)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
 		}
@@ -83,7 +83,7 @@ func handleGetShareLink(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": link.Err.Error()})
 			return
 		}
-		res := utils.GetFrontendURL() + "/share/" + link.Value.(string)
+		res := utils.GetFrontendURLWithPort() + "/share/" + link.Value.(string)
 		ctx.JSON(http.StatusOK, gin.H{"message": res})
 	}
 }
@@ -226,7 +226,7 @@ func handleGetFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		if !ok {
 			return
 		}
-		fileID, ok := GetSlug(ctx, "id")
+		fileID, ok := GetSlugAsUint(ctx, "id")
 		if !ok {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
 			return
@@ -283,7 +283,7 @@ func handleDeleteFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		if !ok {
 			return
 		}
-		fileID, ok := GetSlug(ctx, "id")
+		fileID, ok := GetSlugAsUint(ctx, "id")
 		if !ok {
 			return
 		}

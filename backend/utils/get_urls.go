@@ -14,6 +14,16 @@ func GetFrontendURL() string {
 	return env
 }
 
+func GetFrontendURLWithPort() string {
+	env := os.Getenv("FE_URL")
+	if env == "" {
+		return "localhost:5173"
+	}
+	// basically like the above
+	// no need to add port for prod obv
+	return env
+}
+
 // used for redis (obviously)
 func GetRedisURL() string {
 	env := os.Getenv("ENVIRONMENT")

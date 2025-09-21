@@ -3,6 +3,7 @@
   import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
   import type { File, Share } from "$lib/utils/types";
+    import Copy from "../icons/Copy.svelte";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
   import { files } from "../stores/files";
@@ -20,10 +21,9 @@
   }
   async function copy_link(fileID: number) {
     // TODO: change to somthing either longer or user supplied
-    let TTL = 30;
     let req: Share = {
       FileID: fileID,
-      TTL: TTL,
+      TTL: 30,
     };
     let res = await get_share_link(req);
     $status = res;
@@ -33,19 +33,16 @@
   }
 </script>
 
-
 <!-- TODO: refactor.  -->
 
 <div class="wrapper">
-  <div class="header">
-    Files
-  </div>
+  <div class="header">Files</div>
 
   <div class="files">
     {#each file_list as file}
       <div class="line">
         <div>
-          <FileIcon style="transform: scale(0.6)" />
+          <FileIcon />
           <a href={API_URL + "/files/" + file.ID} download> {file.Filename} </a>
         </div>
         <div>
@@ -53,8 +50,12 @@
         </div>
         <div>
           <button on:click={() => del(file.ID)}
-            ><Trash style="transform: scale(0.6)" /></button
+            ><Trash/></button
+          >          
+          <button on:click={() => copy_link(file.ID)}
+            ><Copy /></button
           >
+
         </div>
       </div>
     {/each}
@@ -71,7 +72,6 @@
     border-bottom: 0.1em solid var(--border);
     border-radius: 0.4em 0.4em 0 0;
     background-color: var(--bg3);
-    border-bottom: 0.1e;
     padding: 1em;
   }
   .wrapper :last-child {
@@ -90,7 +90,7 @@
     gap: 2em;
     border-bottom: 0.1em solid var(--border);
     justify-content: space-between;
-    padding: 0.5em;
+    padding: 1em 0.5em;
     background-color: var(--bg2);
     display: grid;
     grid-template-columns: 5fr 1fr 1fr;
@@ -109,14 +109,21 @@
     justify-content: flex-start;
   }
 
+  div {
+    gap: 0.5em;
+  }
+
   a,
   p,
   button {
     direction: rtl;
     display: flex;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
-    max-width: 10em;
+    gap: 1em;
+    max-width: 30vw;
     white-space: nowrap;
+    overflow: hidden;
   }
 </style>

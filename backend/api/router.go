@@ -32,7 +32,7 @@ func SetupRouter(dispatcher *jobs.Dispatcher) *gin.Engine {
 	router.POST("/register", handleRegister(dispatcher))                          // add a new user
 	router.POST("/logout", handleLogout)                                          // logout a user
 	router.GET("/health", auth.LoadIdOnly(), handleHealth)                        // returns ok, info about authenticated user
-	router.POST("/share/", auth.RequireAuth(), handleGetShareLink(dispatcher)) // returns public file download link
-	router.GET("/share/:key", handleGetSharedFile(dispatcher))     									// TODO: returns file from shared link
+	router.POST("/share/", auth.RequireAuth(), handleGetShareLink(dispatcher))    // returns public file download link
+	router.GET("/share/:key", handleGetSharedFile(dispatcher))                    // TODO: returns file from shared link
 	return router
 }
