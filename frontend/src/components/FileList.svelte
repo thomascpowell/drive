@@ -37,10 +37,8 @@
 <!-- TODO: refactor.  -->
 
 <div class="wrapper">
-  <div class="line">
-    <div><p>name</p></div>
-    <div><p>date</p></div>
-    <div><p>del</p></div>
+  <div class="header">
+    Files
   </div>
 
   <div class="files">
@@ -67,14 +65,16 @@
   .wrapper {
     border: 0.1em solid var(--border);
     border-radius: 0.5em;
-    width: 30em;
+    max-width: 30em;
   }
-  .wrapper > :first-child {
+  .header {
+    border-bottom: 0.1em solid var(--border);
     border-radius: 0.4em 0.4em 0 0;
     background-color: var(--bg3);
+    border-bottom: 0.1e;
     padding: 1em;
   }
-  .wrapper :nth-last-child(1) {
+  .wrapper :last-child {
     border-radius: 0 0 0.4em 0.4em !important;
     border: none !important;
   }
@@ -93,7 +93,7 @@
     padding: 0.5em;
     background-color: var(--bg2);
     display: grid;
-    grid-template-columns: 9fr 2fr 1fr;
+    grid-template-columns: 5fr 1fr 1fr;
   }
   .line > * {
     display: flex;
@@ -116,7 +116,6 @@
     display: flex;
     align-items: center;
     text-decoration: none;
-    overflow: hidden !important;
     max-width: 10em;
     white-space: nowrap;
   }

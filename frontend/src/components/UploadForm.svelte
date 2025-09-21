@@ -78,7 +78,8 @@
   }
 
   form {
-    width: 20em;
+    max-width: 20em;
+    width: 100%;
     background-color: var(--bg2);
     border: 0.1em solid var(--border);
     border-radius: 0.5em;
