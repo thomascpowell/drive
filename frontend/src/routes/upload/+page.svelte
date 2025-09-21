@@ -14,7 +14,6 @@
   function handleChange(e: Event) {
     const target = e.target as HTMLInputElement;
     let selected: File | null = target.files?.[0] ?? null;
-    console.log(target.files?.[0] ?? null);
     file = selected;
   }
 
