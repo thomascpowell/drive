@@ -6,13 +6,11 @@
   <div class="wrapper">
     <div class="inner">
       <div class="close">
-        <button>X</button>
+        <button on:click={() => open = false}>X</button>
       </div>
-
       <div class="content">
         <slot />
       </div>
-      
     </div>
   </div>
 {/if}

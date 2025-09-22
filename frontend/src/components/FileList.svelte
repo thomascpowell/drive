@@ -1,5 +1,6 @@
 <script lang="ts">
   import { deleteFile } from "$lib/delete";
+  import Dialog from "./Dialog.svelte";
   import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
   import type { File, Share } from "$lib/utils/types";
@@ -32,6 +33,10 @@
 </script>
 
 <!-- TODO: refactor.  -->
+
+<Dialog open={true}>
+  <p>test element</p>
+</Dialog>
 
 <div class="wrapper">
   <div class="header">Files</div>

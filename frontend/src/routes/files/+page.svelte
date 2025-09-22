@@ -3,31 +3,14 @@
   import { get_files } from "$lib/get_files";
   import { files } from "../../stores/files";
   import FileList from "../../components/FileList.svelte";
-  import Dialog from "../../components/Dialog.svelte";
 
   onMount(async () => {
     $files = await get_files();
   });
 </script>
 
-<Dialog open={true}>
-  <p>hello</p>
-  <p>hello</p>
-  <p>hello</p>
-</Dialog>
-
-<div>
-  {#if $files.length == 0}
-    <p>no files</p>
-  {:else}
-    <FileList file_list={$files} />
-  {/if}
-</div>
-
-<style>
-  div {
-    display: flex;
-    gap: 1em;
-    flex-direction: column;
-  }
-</style>
+{#if $files.length == 0}
+  <p>no files</p>
+{:else}
+  <FileList file_list={$files} />
+{/if}
