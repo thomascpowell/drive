@@ -11,25 +11,47 @@ Fullstack file storage server with Dropbox-like functionality.
 ## Stack
 - Frontend: SvelteKit (TypeScript) with Vite
 - Backend: Go (Gin, GORM)
-- Store: SQLite, Redis
+- Stores: SQLite, Redis
 - Deployment: Docker, Nginx
 
-## Note
-- This project uses my RESP-compliant [Redis clone](https://github.com/thomascpowell/redis/).
-- It is interchangeable with the official Redis image for the purposes of this project.
-- The backend uses the offical `go-redis` client library. 
+## Requirements
+- For Development: `Node`, `Go`, and `Redis`
+- For Production: Any Docker environment
+
+> [!NOTE]
+> This project uses my [Redis clone](https://github.com/thomascpowell/redis/), which is interchangable with the official Redis image for the purposes of this project. The backend still uses the official `go-redis` client library. Any RESP-compliant TCP server will work for development and testing.
+
 
 ## Usage
+### Development
 ```sh
-# Backend
-cd backend
-go run *.go
+# Start any RESP-compatible TCP server
+# (Only required for some features)
+redis-server
 
-# Frontend
+# Start the backend
+cd backend
+go run main.go
+
+# Start the frontend
 cd frontend
 npm install
 npm run dev
+```
 
-# Docker
+### Testing
+```sh
+cd backend
+
+# Run unit tests
+go test -v ./tests
+
+# Run Redis integration tests
+# (Requires a Redis server running)
+go test -v ./integration
+```
+
+### Production
+```sh
 docker-compose up --build
 ```
