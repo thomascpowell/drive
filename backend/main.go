@@ -15,7 +15,7 @@ var WORKER_COUNT = 4
 
 func main() {
 	s := store.NewStore("./data/app.db")
-	r := redis.NewRedis(utils.GetRedisURL()+":6379")
+	r := redis.NewRedis(utils.GetRedisURL())
 	dispatcher := jobs.NewDispatcher(s, &r, QUEUE_SIZE)
 	dispatcher.StartWorkers(WORKER_COUNT)
 	router := api.SetupRouter(dispatcher)

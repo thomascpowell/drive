@@ -27,11 +27,9 @@ func GetFrontendURLWithPort() string {
 // used for redis (obviously)
 func GetRedisURL() string {
 	env := os.Getenv("ENVIRONMENT")
-		// env is unset -> no docker -> dev
-		// env is set -> docker -> use docker relative
 	if env == "" {
-		return "localhost"
+		return "localhost:6379"
 	}
-	return "redis"
+	return "redis:6379"
 }
 

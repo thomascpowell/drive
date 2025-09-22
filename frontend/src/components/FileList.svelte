@@ -14,7 +14,6 @@
   async function del(fileID: number) {
     let res = await deleteFile(fileID);
     $status = res;
-
     if (res.message) {
       files.update((current) => current.filter((f: File) => f.ID !== fileID));
     }
@@ -23,13 +22,14 @@
     // TODO: change to somthing either longer or user supplied
     let req: Share = {
       FileID: fileID,
-      TTL: 30,
+      TTL: 60,
     };
     let res = await get_share_link(req);
-    $status = res;
     if (res.message) {
       navigator.clipboard.writeText(res.message);
+      res.message = "temp share link copied";
     }
+    $status = res;
   }
 </script>
 
@@ -83,7 +83,7 @@
     flex-shrink: 0;
     width: 100%;
     display: flex;
-    gap: 2em;
+    gap: 1em;
     border-bottom: 0.1em solid var(--border);
     justify-content: space-between;
     padding: 1em 0.5em;
@@ -91,23 +91,20 @@
     display: grid;
     grid-template-columns: 5fr 1fr 1fr;
   }
-  .line > * {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    white-space: nowrap;
-  }
   .line :first-child {
     min-width: 0;
-  }
-  .line > :last-child {
-    justify-content: flex-end;
   }
   .line > :nth-last-child(2) {
     justify-content: flex-start;
   }
-
-  div {
+  .line > :last-child {
+    justify-content: flex-end;
+  }
+  .line > div {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    white-space: nowrap;
     gap: 0.5em;
   }
 
@@ -121,6 +118,6 @@
     text-decoration: none;
     gap: 1em;
     white-space: nowrap;
-    overflow: hidden;
+    overflow:scroll;
   }
 </style>

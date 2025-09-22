@@ -10,7 +10,7 @@ import (
 )
 
 func TestRedisConnection(t *testing.T) {
-	rdb := redis.NewRedis(utils.GetRedisURL()+":6379")
+	rdb := redis.NewRedis(utils.GetRedisURL())
 
 	// test general function
 	ctx := context.Background()

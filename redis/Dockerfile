@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=builder /app/target/release/redis .
 
 EXPOSE 6379
-CMD ["./redis"]
+CMD ["./redis", "0.0.0.0:6379"]

@@ -18,18 +18,20 @@ func handleGetSharedFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		key, ok := GetSlugAsString(ctx, "key")
 		if !ok {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "failed to parse key"})
 			return
 		}
 		// TODO: try to do somthing abt this
 		// holy type conversions
 		str_id, err := dispatcher.Redis.Get(key)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid key"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 		int_id, err := strconv.Atoi(str_id)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid file id"})
+			return
 		}
 		uint_id := uint(int_id)
 		job := &models.Job{
@@ -43,6 +45,7 @@ func handleGetSharedFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
 		result := <-job.Done
 		if result.Err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": result.Err.Error()})
+			return
 		}
 		fileptr, ok := result.Value.(*models.File)
 		if !ok {
