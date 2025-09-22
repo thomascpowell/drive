@@ -40,7 +40,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-
+    z-index: 5;
     transition: fade;
   }
 </style>

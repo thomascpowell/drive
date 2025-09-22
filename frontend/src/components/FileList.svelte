@@ -9,6 +9,7 @@
   import Trash from "../icons/Trash.svelte";
   import { files } from "../stores/files";
   import { status } from "../stores/status";
+    import LinkIcon from "../icons/LinkIcon.svelte";
 
   export let file_list: File[];
 
@@ -34,7 +35,8 @@
 
 <!-- TODO: refactor.  -->
 
-<Dialog open={true}>
+<Dialog title="test title" open={true}>
+  <p>test element</p>
   <p>test element</p>
 </Dialog>
 
@@ -51,7 +53,7 @@
           <p class="date">{file.UploadedAt.substring(5, 10)}</p>
         <div class="actions">
           <button on:click={() => del(file.ID)}><Trash /></button>
-          <button on:click={() => copy_link(file.ID)}><Copy /></button>
+          <button on:click={() => copy_link(file.ID)}><LinkIcon /></button>
         </div>
       </div>
     {/each}
