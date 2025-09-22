@@ -1,16 +1,26 @@
 services:
+  redis:
+    container_name: drive-redis
+    build:
+      context: ./redis
+    restart: unless-stopped
+
   backend:
+    container_name: drive-backend
     build:
       context: ./backend
     volumes:
       - db_data:/app/data
     restart: unless-stopped
+    depends_on:
+      - redis
     environment:
       JWT_SECRET: EXAMPLE
       ENVIRONMENT: dev
       FE_URL: localhost
 
   frontend:
+    container_name: drive-frontend
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
@@ -18,9 +28,9 @@ services:
     restart: "no"
 
   nginx:
+    container_name: drive-nginx
     build:
       context: ./nginx
-    container_name: nginx
     ports:
       - "80:80"
       - "443:443"

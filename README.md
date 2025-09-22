@@ -6,7 +6,7 @@ Fullstack file storage server with Dropbox-like functionality.
 ## Features
 - File management operations (upload, download, delete)
 - Clean UI with secure authentication (JWT)
-- Planned: Link-based file sharing
+- WIP: Link-based file sharing
 
 ## Stack
 - Frontend: SvelteKit (TypeScript) with Vite

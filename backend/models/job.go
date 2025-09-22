@@ -17,6 +17,7 @@ const (
 	GetUser
 	RegisterUser
 	AuthenticateUser
+	GetShareLink
 )
 
 type Payload struct {
@@ -27,9 +28,15 @@ type Payload struct {
 	GetUser          GetUserPayload
 	RegisterUser     RegisterUserPayload
 	AuthenticateUser AuthenticateUserPayload
+	GetShareLink     GetShareLinkPayload
 }
 
 type UploadPayload = File
+
+type GetShareLinkPayload struct {
+	FileID uint
+	TTL    uint
+}
 
 type GetUserFilesPayload struct {
 	UserID uint
@@ -53,6 +60,15 @@ type RegisterUserPayload struct {
 }
 
 type AuthenticateUserPayload = Credentials
+
+func NewGetShareLinkPayload(fileID uint, ttl uint) *Payload {
+	return &Payload{
+		GetShareLink: GetShareLinkPayload{
+			FileID: fileID,
+			TTL:    ttl,
+		},
+	}
+}
 
 func NewUploadPayload(file File) *Payload {
 	return &Payload{

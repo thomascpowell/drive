@@ -11,12 +11,14 @@ import (
 )
 
 func TestGetUser(t *testing.T) {
-	mock := &MockStore{
+	store_mock := &MockStore{
 		GetUserByUsernameFunc: func(username string) (*models.User, error) {
 			return &models.User{ID: 1}, nil
 		},
 	}
-	dispatcher := jobs.NewDispatcher(mock, 1)
+	redis_mock := &MockRedis{}
+
+	dispatcher := jobs.NewDispatcher(store_mock, redis_mock, 1)
 	dispatcher.StartWorkers(1)
 	defer dispatcher.Stop()
 	testUsername := "user"
@@ -46,12 +48,14 @@ func TestGetUser(t *testing.T) {
 }
 
 func TestHandleGetFile_Success(t *testing.T) {
-	mock := &MockStore{
+	store_mock := &MockStore{
 		GetFileByIDFunc: func(id uint) (*models.File, error) {
 			return &models.File{ID: id, Filename: "example.txt"}, nil
 		},
 	}
-	dispatcher := jobs.NewDispatcher(mock, 1)
+	redis_mock := &MockRedis{}
+
+	dispatcher := jobs.NewDispatcher(store_mock, redis_mock, 1)
 	dispatcher.StartWorkers(1)
 	defer dispatcher.Stop()
 	testFileID := uint(123)
@@ -81,12 +85,13 @@ func TestHandleGetFile_Success(t *testing.T) {
 }
 
 func TestHandleGetFile_Fail(t *testing.T) {
-	mock := &MockStore{
+	store_mock := &MockStore{
 		GetFileByIDFunc: func(id uint) (*models.File, error) {
 			return nil, errors.New("some error")
 		},
 	}
-	dispatcher := jobs.NewDispatcher(mock, 1)
+	redis_mock := &MockRedis{}
+	dispatcher := jobs.NewDispatcher(store_mock, redis_mock, 1)
 	dispatcher.StartWorkers(1)
 	defer dispatcher.Stop()
 	testFileID := uint(123)
@@ -114,7 +119,7 @@ func TestQueue(t *testing.T) {
 	JOB_COUNT := 10
 	WORKER_COUNT := 2
 	TIME_LIMIT := 6 * time.Second
-	mock := &MockStore{
+	store_mock := &MockStore{
 		GetFileByIDFunc: func(id uint) (*models.File, error) {
 			// simulate workload
 			// (so that both workers get a chance)
@@ -122,7 +127,8 @@ func TestQueue(t *testing.T) {
 			return &models.File{ID: id, Filename: "example.txt"}, nil
 		},
 	}
-	dispatcher := jobs.NewDispatcher(mock, JOB_COUNT)
+	redis_mock := &MockRedis{}
+	dispatcher := jobs.NewDispatcher(store_mock, redis_mock, JOB_COUNT)
 	dispatcher.StartWorkers(WORKER_COUNT)
 	results := make([]chan models.Result, JOB_COUNT)
 	resultCh := make(chan models.Result) // accumulates all results

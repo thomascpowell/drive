@@ -4,18 +4,21 @@ import (
 	"errors"
 	"fmt"
 	"github.com/thomascpowell/drive/models"
+	"github.com/thomascpowell/drive/redis"
 	"github.com/thomascpowell/drive/store"
 )
 
 type Dispatcher struct {
 	JobQueue chan *models.Job
 	Store    store.StoreInterface
+	Redis       redis.RedisInterface
 }
 
-func NewDispatcher(store store.StoreInterface, size int) *Dispatcher {
+func NewDispatcher(store store.StoreInterface, rc redis.RedisInterface, size int) *Dispatcher {
 	dispatcher := Dispatcher{
 		JobQueue: make(chan *models.Job, size),
 		Store:    store,
+		Redis: 			rc,
 	}
 	return &dispatcher
 }
@@ -73,6 +76,9 @@ func (d *Dispatcher) process(job *models.Job) {
 	case models.AuthenticateUser:
 		payload := &job.Payload.AuthenticateUser
 		d.handleAuthenticateUser(payload, job)
+	case models.GetShareLink:
+		payload := &job.Payload.GetShareLink
+		d.handleGetShareLink(payload, job)
 	default:
 		job.Done <- models.Result{Err: errors.New("unknown job type")}
 	}
