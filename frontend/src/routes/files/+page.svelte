@@ -3,14 +3,18 @@
   import { get_files } from "$lib/get_files";
   import { files } from "../../stores/files";
   import FileList from "../../components/FileList.svelte";
-  import Drawer from "../../components/Drawer.svelte";
+  import Dialog from "../../components/Dialog.svelte";
 
   onMount(async () => {
     $files = await get_files();
   });
 </script>
 
-<Drawer open={false}>hello</Drawer>
+<Dialog open={true}>
+  <p>hello</p>
+  <p>hello</p>
+  <p>hello</p>
+</Dialog>
 
 <div>
   {#if $files.length == 0}

@@ -19,11 +19,10 @@
     }
   }
   async function copy_link(fileID: number, TTL: number = 60) {
-    let req: Share = {
+    let res = await get_share_link({
       FileID: fileID,
       TTL: TTL,
-    };
-    let res = await get_share_link(req);
+    });
     if (res.message) {
       navigator.clipboard.writeText(res.message);
       res.message = "temp share link copied";
@@ -117,6 +116,6 @@
     text-decoration: none;
     gap: 1em;
     white-space: nowrap;
-    overflow:scroll;
+    overflow: scroll;
   }
 </style>
