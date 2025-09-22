@@ -4,7 +4,7 @@ export interface Res {
   token?: string
 }
 
-export interface File {
+export interface FileRec {
   ID: number
   Filename: string
   Path: string

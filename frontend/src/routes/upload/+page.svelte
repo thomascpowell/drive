@@ -55,11 +55,12 @@
   }
   .file button {
     width: 100%;
-    height: 7em;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 1em;
+    font-size: 1.5em;
     color: var(--text);
   }
   .file > input {
@@ -74,6 +75,7 @@
     border-top: 0.1em solid var(--border);
     width: 100%;
     overflow: hidden;
+    white-space: nowrap;
   }
 
   form {

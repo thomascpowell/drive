@@ -3,20 +3,23 @@
   import Dialog from "./Dialog.svelte";
   import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
-  import type { File } from "$lib/utils/types";
+  import type { FileRec } from "$lib/utils/types";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
   import { files } from "../stores/files";
   import { status } from "../stores/status";
-    import LinkIcon from "../icons/LinkIcon.svelte";
+  import LinkIcon from "../icons/LinkIcon.svelte";
 
-  export let file_list: File[];
+  export let file_list: FileRec[];
+
+  let current_file: FileRec | null = null
+  let dialog_opened: boolean = true
 
   async function del(fileID: number) {
     let res = await deleteFile(fileID);
     $status = res;
     if (res.message) {
-      files.update((current) => current.filter((f: File) => f.ID !== fileID));
+      files.update((current) => current.filter((f: FileRec) => f.ID !== fileID));
     }
   }
   async function copy_link(fileID: number, TTL: number = 60) {
@@ -32,9 +35,8 @@
   }
 </script>
 
-<!-- TODO: refactor.  -->
 
-<Dialog title="test title" open={true}>
+<Dialog title={current_file?.Filename ?? ""} open={dialog_opened}>
   <p>test element</p>
   <p>test element</p>
 </Dialog>
