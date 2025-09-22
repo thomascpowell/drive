@@ -1,7 +1,7 @@
 import { API_URL } from '$lib/utils/config'
-import type { Res, File } from '$lib/utils/types'
+import type { Res, FileRec } from '$lib/utils/types'
 
-export async function get_files(): Promise<File[]> {
+export async function get_files(): Promise<FileRec[]> {
   const ENDPOINT = API_URL + "/files"
   const res = await fetch(ENDPOINT, {
     method: "GET",
@@ -11,6 +11,6 @@ export async function get_files(): Promise<File[]> {
   if (data.error) {
     console.error(data.error);
   }
-  const files: File[] = data.message
+  const files: FileRec[] = data.message
   return files
 }

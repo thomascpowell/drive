@@ -1,6 +1,5 @@
 <script lang="ts">
-    import Close from "../icons/Close.svelte";
-
+  import Close from "../icons/Close.svelte";
   export let open: boolean;
   export let title: string;
 </script>
@@ -8,18 +7,16 @@
 {#if open}
   <div class="wrapper">
     <div class="inner">
-
       <div class="header">
         <p>{title}</p>
         <button on:click={() => (open = false)}>
-          <Close/>
+          <Close />
         </button>
       </div>
 
-     <div class="content">
+      <div class="content">
         <slot />
       </div>
-
     </div>
   </div>
 {/if}
