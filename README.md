@@ -5,13 +5,19 @@ Fullstack file storage server with Dropbox-like functionality.
 
 ## Features
 - File management operations (upload, download, delete)
-- Clean UI with secure authentication (JWT)
-- WIP: Link-based file sharing
+- Clean UI with secure authentication via JWTs
+- Files are private by default, with optional share link generation
 
 ## Stack
 - Frontend: SvelteKit (TypeScript) with Vite
-- Backend: Go (Gin, GORM, SQLite)
+- Backend: Go (Gin, GORM)
+- Store: SQLite, Redis
 - Deployment: Docker, Nginx
+
+## Note
+- This project uses my RESP-compliant [Redis clone](https://github.com/thomascpowell/redis/).
+- It is interchangeable with the official Redis image for the purposes of this project.
+- The backend uses the offical `go-redis` client library. 
 
 ## Usage
 ```sh
