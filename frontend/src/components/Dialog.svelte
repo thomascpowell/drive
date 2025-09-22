@@ -1,25 +1,22 @@
 <script lang="ts">
   import Close from "../icons/Close.svelte";
-  export let open: boolean;
   export let title: string;
+  export let open: boolean;
 </script>
 
-{#if open}
-  <div class="wrapper">
-    <div class="inner">
-      <div class="header">
-        <p>{title}</p>
-        <button on:click={() => (open = false)}>
-          <Close />
-        </button>
-      </div>
-
-      <div class="content">
-        <slot />
-      </div>
+<div class="wrapper">
+  <div class="inner">
+    <div class="header">
+      <p>{title}</p>
+      <button on:click={() => (open = false)}>
+        <Close />
+      </button>
+    </div>
+    <div class="content">
+      <slot />
     </div>
   </div>
-{/if}
+</div>
 
 <style>
   .wrapper {
@@ -51,13 +48,16 @@
   .header {
     padding: 1em;
     display: flex;
+    gap: 2em;
     align-items: center;
     width: 100%;
     justify-content: space-between;
   }
-  .header > * {
+  .header > p {
     display: flex;
     align-items: center;
+    white-space: nowrap;
+    overflow: scroll;
   }
   .content {
     justify-content: baseline;

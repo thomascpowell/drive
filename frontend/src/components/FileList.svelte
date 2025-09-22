@@ -9,17 +9,20 @@
   import { files } from "../stores/files";
   import { status } from "../stores/status";
   import LinkIcon from "../icons/LinkIcon.svelte";
+  import DotsIcon from "../icons/DotsIcon.svelte";
 
   export let file_list: FileRec[];
 
-  let current_file: FileRec | null = null
-  let dialog_opened: boolean = true
+  let current_file: FileRec | null = null;
+  let dialog_open: boolean = false;
 
   async function del(fileID: number) {
     let res = await deleteFile(fileID);
     $status = res;
     if (res.message) {
-      files.update((current) => current.filter((f: FileRec) => f.ID !== fileID));
+      files.update((current) =>
+        current.filter((f: FileRec) => f.ID !== fileID),
+      );
     }
   }
   async function copy_link(fileID: number, TTL: number = 60) {
@@ -35,28 +38,36 @@
   }
 </script>
 
-
-<Dialog title={current_file?.Filename ?? ""} open={dialog_opened}>
-  <p>test element</p>
-  <p>test element</p>
-</Dialog>
+{#if dialog_open && current_file}
+  <Dialog bind:open={dialog_open} title={current_file!.Filename}>
+    <a href={API_URL + "/files/" + current_file!.ID} download> download </a>
+    <button on:click={() => del(current_file!.ID)}>
+      <Trash /> delete
+    </button>
+    <button on:click={() => copy_link(current_file!.ID || 0)}>
+      <LinkIcon />copy link
+    </button>
+  </Dialog>
+{/if}
 
 <div class="wrapper">
   <div class="header">Files</div>
 
   <div class="files">
     {#each file_list as file}
-      <div class="line">
+      <button
+        class="line"
+        on:click={() => (current_file = file, dialog_open = true)}
+      >
         <div class="name">
           <FileIcon />
-          <a href={API_URL + "/files/" + file.ID} download> {file.Filename} </a>
+          <p>{file.Filename}</p>
         </div>
-          <p class="date">{file.UploadedAt.substring(5, 10)}</p>
+        <p class="date">{file.UploadedAt.substring(5, 10)}</p>
         <div class="actions">
-          <button on:click={() => del(file.ID)}><Trash /></button>
-          <button on:click={() => copy_link(file.ID)}><LinkIcon /></button>
+          <p><DotsIcon /></p>
         </div>
-      </div>
+      </button>
     {/each}
   </div>
 </div>
@@ -119,7 +130,7 @@
   a,
   p,
   button {
-    direction: rtl;
+    /* direction: rtl; */
     display: flex;
     align-items: center;
     justify-content: center;
