@@ -18,11 +18,10 @@
       files.update((current) => current.filter((f: File) => f.ID !== fileID));
     }
   }
-  async function copy_link(fileID: number) {
-    // TODO: change to somthing either longer or user supplied
+  async function copy_link(fileID: number, TTL: number = 60) {
     let req: Share = {
       FileID: fileID,
-      TTL: 60,
+      TTL: TTL,
     };
     let res = await get_share_link(req);
     if (res.message) {
