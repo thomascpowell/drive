@@ -3,7 +3,7 @@
   import Dialog from "./Dialog.svelte";
   import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
-  import type { File, Share } from "$lib/utils/types";
+  import type { File } from "$lib/utils/types";
   import Copy from "../icons/Copy.svelte";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
@@ -44,14 +44,12 @@
   <div class="files">
     {#each file_list as file}
       <div class="line">
-        <div>
+        <div class="name">
           <FileIcon />
           <a href={API_URL + "/files/" + file.ID} download> {file.Filename} </a>
         </div>
-        <div>
-          <p>{file.UploadedAt.substring(5, 10)}</p>
-        </div>
-        <div>
+          <p class="date">{file.UploadedAt.substring(5, 10)}</p>
+        <div class="actions">
           <button on:click={() => del(file.ID)}><Trash /></button>
           <button on:click={() => copy_link(file.ID)}><Copy /></button>
         </div>
@@ -94,13 +92,17 @@
     display: grid;
     grid-template-columns: 5fr 1fr 1fr;
   }
-  .line :first-child {
+  .name {
     min-width: 0;
+    white-space: nowrap;
+    overflow: scroll;
   }
-  .line > :nth-last-child(2) {
+  .date {
+    flex-shrink: 0;
+    width: min-content;
     justify-content: flex-start;
   }
-  .line > :last-child {
+  .actions {
     justify-content: flex-end;
   }
   .line > div {
@@ -120,7 +122,5 @@
     justify-content: center;
     text-decoration: none;
     gap: 1em;
-    white-space: nowrap;
-    overflow: scroll;
   }
 </style>
