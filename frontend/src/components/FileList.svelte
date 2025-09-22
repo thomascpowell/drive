@@ -4,7 +4,6 @@
   import { get_share_link } from "$lib/get_share_link";
   import { API_URL } from "$lib/utils/config";
   import type { File } from "$lib/utils/types";
-  import Copy from "../icons/Copy.svelte";
   import FileIcon from "../icons/FileIcon.svelte";
   import Trash from "../icons/Trash.svelte";
   import { files } from "../stores/files";

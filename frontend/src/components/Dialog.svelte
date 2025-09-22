@@ -39,9 +39,13 @@
   .inner {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    height: 20em;
-    max-width: 30em;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 20em;
+    height: min-content;
+    max-height: 20em;
+    min-height: 10em;
+    overflow: scroll;
     background-color: var(--bg2);
     border-radius: 1em;
     border: 0.1em solid var(--border);
@@ -54,11 +58,14 @@
     width: 100%;
     justify-content: space-between;
   }
+  .header > * {
+    display: flex;
+    align-items: center;
+  }
   .content {
     justify-content: baseline;
     padding: 1em;
     height: 100%;
     width: 100%;
-
   }
 </style>
