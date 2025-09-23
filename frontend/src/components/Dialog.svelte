@@ -7,7 +7,7 @@
 <div class="wrapper">
   <div class="inner">
     <div class="header">
-      <p>{title}</p>
+      <h2>{title}</h2>
       <button on:click={() => (open = false)}>
         <Close />
       </button>
@@ -35,10 +35,10 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    max-width: 20em;
     height: min-content;
     max-height: 20em;
     min-height: 10em;
+    max-width: 25em;
     overflow: scroll;
     background-color: var(--bg2);
     border-radius: 1em;
@@ -46,22 +46,29 @@
   }
 
   .header {
-    padding: 1em;
+    padding: 1.5em;
     display: flex;
     gap: 2em;
     align-items: center;
     width: 100%;
     justify-content: space-between;
   }
-  .header > p {
+  .header > h2 {
     display: flex;
     align-items: center;
     white-space: nowrap;
     overflow: scroll;
   }
+  .header button {
+    display: flex;
+    align-items: center;
+  }
   .content {
     justify-content: baseline;
-    padding: 1em;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+    padding: 1.5em;
     height: 100%;
     width: 100%;
   }

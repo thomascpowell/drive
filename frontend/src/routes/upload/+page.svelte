@@ -8,7 +8,7 @@
   import { status } from "../../stores/status";
 
   let fileInput: HTMLInputElement;
-  $: filename = file?.name ?? "no file selected";
+  $: filename = file?.name ?? "n/a";
   let file: File | null = null;
 
   function handleChange(e: Event) {

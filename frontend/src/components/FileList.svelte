@@ -10,6 +10,7 @@
   import { status } from "../stores/status";
   import LinkIcon from "../icons/LinkIcon.svelte";
   import DotsIcon from "../icons/DotsIcon.svelte";
+    import ArrowRight from "../icons/ArrowRight.svelte";
 
   export let file_list: FileRec[];
 
@@ -40,33 +41,45 @@
 
 {#if dialog_open && current_file}
   <Dialog bind:open={dialog_open} title={current_file!.Filename}>
-    <a href={API_URL + "/files/" + current_file!.ID} download> download </a>
+
+    <a href={API_URL + "/files/" + current_file!.ID} download> 
+     <ArrowRight/> download 
+    </a>
+
     <button on:click={() => del(current_file!.ID)}>
       <Trash /> delete
     </button>
+
     <button on:click={() => copy_link(current_file!.ID || 0)}>
       <LinkIcon />copy link
     </button>
+
   </Dialog>
 {/if}
 
 <div class="wrapper">
-  <div class="header">Files</div>
-
+  <div class="header">
+    <h1>Files</h1>
+  </div>
   <div class="files">
     {#each file_list as file}
+
       <button
         class="line"
-        on:click={() => (current_file = file, dialog_open = true)}
-      >
+        on:click={() => ((current_file = file), (dialog_open = true))}
+        >
+
         <div class="name">
           <FileIcon />
           <p>{file.Filename}</p>
         </div>
+
         <p class="date">{file.UploadedAt.substring(5, 10)}</p>
+
         <div class="actions">
           <p><DotsIcon /></p>
         </div>
+
       </button>
     {/each}
   </div>
@@ -101,10 +114,10 @@
     gap: 1em;
     border-bottom: 0.1em solid var(--border);
     justify-content: space-between;
-    padding: 1em 0.5em;
+    padding: 1em 1em;
     background-color: var(--bg2);
     display: grid;
-    grid-template-columns: 5fr 1fr 1fr;
+    grid-template-columns: 1fr auto auto;
   }
   .name {
     min-width: 0;
@@ -131,6 +144,8 @@
   p,
   button {
     /* direction: rtl; */
+    width: min-content;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;

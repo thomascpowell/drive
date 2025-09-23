@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400&display=swap');
 
 * {
   box-sizing: border-box;
@@ -37,6 +37,7 @@ body {
   height: 100vh;
   padding: 1em;
   width: 100vw;
+  font-weight: 200
 }
 .inner {
   margin: 0 auto;
@@ -48,14 +49,8 @@ body {
   flex-direction: column;
 }
 
-h1 {
-  font-weight: 600;
-  font-size: 1.2em;
-}
-
-p,
-a {
-  font-weight: 300
+h1, h2 {
+  font-weight: 400;
 }
 
 a, button {
