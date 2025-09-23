@@ -16,7 +16,7 @@
 
   let current_file: FileRec | null = null;
   let dialog_open: boolean = false;
-  let dialog_ttl: number = 60;
+  let dialog_ttl: number = 100;
 
   async function del(fileID: number) {
     let res = await deleteFile(fileID);
@@ -30,7 +30,7 @@
   async function copy_link(fileID: number, TTL: number) {
     let res = await get_share_link({
       FileID: fileID,
-      TTL: Number(TTL),
+      TTL: TTL,
     });
     if (res.message) {
       navigator.clipboard.writeText(res.message);
@@ -50,18 +50,17 @@
     </button>
     <div class="ttl_form">
       <button on:click={() => copy_link(current_file!.ID, dialog_ttl)}>
-        <LinkIcon />get link
+        <LinkIcon />copy link (valid for
       </button>
-       w/ TTL
-      <input bind:value={dialog_ttl} type="text">
-      (s)
+      <input bind:value={dialog_ttl} type="number" />
+      s)
     </div>
   </Dialog>
 {/if}
 
 <div class="wrapper">
   <div class="header">
-    <h1>Files</h1>
+    <h1>files</h1>
   </div>
   <div class="files">
     {#each file_list as file}
@@ -154,11 +153,11 @@
   .ttl_form {
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.25em;
   }
   .ttl_form input {
-    width: 2ch;
-    max-width: 3em;
+    width: 3ch;
+    text-align: center;
     border-bottom: 0.025em solid var(--text);
   }
 </style>

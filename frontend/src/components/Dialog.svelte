@@ -4,8 +4,8 @@
   export let open: boolean;
 </script>
 
-<div class="wrapper">
-  <div class="inner">
+<div class="wrapper" role="none" on:click={() => (open = false)}>
+  <div class="inner" on:click|stopPropagation role="none">
     <div class="header">
       <h2>{title}</h2>
       <button on:click={() => (open = false)}>
