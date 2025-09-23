@@ -46,7 +46,7 @@
   }
 
   .header {
-    padding: 1.5em;
+    padding: 1.5em 1.5em 0em 1.5em;
     display: flex;
     gap: 2em;
     align-items: center;

@@ -5,7 +5,7 @@
 
 {#if page.url.pathname !== "/"}
   <div>
-    <NavLink href="/files">files</NavLink>
+    <NavLink href="/files">home</NavLink>
     <NavLink href="/upload">upload</NavLink>
     <NavLink href="/logout">log out</NavLink>
   </div>

@@ -12,5 +12,7 @@ export async function get_share_link(req: Share): Promise<Res> {
   if (data.error) {
     console.error(data.error);
   }
+  // looks right
+  console.log(req.FileID, req.TTL);
   return data
 }

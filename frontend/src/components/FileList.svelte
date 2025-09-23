@@ -10,12 +10,13 @@
   import { status } from "../stores/status";
   import LinkIcon from "../icons/LinkIcon.svelte";
   import DotsIcon from "../icons/DotsIcon.svelte";
-    import ArrowRight from "../icons/ArrowRight.svelte";
+  import Download from "../icons/Download.svelte";
 
   export let file_list: FileRec[];
 
   let current_file: FileRec | null = null;
   let dialog_open: boolean = false;
+  let dialog_ttl: number = 60;
 
   async function del(fileID: number) {
     let res = await deleteFile(fileID);
@@ -26,10 +27,10 @@
       );
     }
   }
-  async function copy_link(fileID: number, TTL: number = 60) {
+  async function copy_link(fileID: number, TTL: number) {
     let res = await get_share_link({
       FileID: fileID,
-      TTL: TTL,
+      TTL: Number(TTL),
     });
     if (res.message) {
       navigator.clipboard.writeText(res.message);
@@ -41,19 +42,20 @@
 
 {#if dialog_open && current_file}
   <Dialog bind:open={dialog_open} title={current_file!.Filename}>
-
-    <a href={API_URL + "/files/" + current_file!.ID} download> 
-     <ArrowRight/> download 
+    <a href={API_URL + "/files/" + current_file!.ID} download>
+      <Download /> download
     </a>
-
     <button on:click={() => del(current_file!.ID)}>
       <Trash /> delete
     </button>
-
-    <button on:click={() => copy_link(current_file!.ID || 0)}>
-      <LinkIcon />copy link
-    </button>
-
+    <div class="ttl_form">
+      <button on:click={() => copy_link(current_file!.ID, dialog_ttl)}>
+        <LinkIcon />get link
+      </button>
+       w/ TTL
+      <input bind:value={dialog_ttl} type="text">
+      (s)
+    </div>
   </Dialog>
 {/if}
 
@@ -63,12 +65,7 @@
   </div>
   <div class="files">
     {#each file_list as file}
-
-      <button
-        class="line"
-        on:click={() => ((current_file = file), (dialog_open = true))}
-        >
-
+      <div class="line">
         <div class="name">
           <FileIcon />
           <p>{file.Filename}</p>
@@ -77,10 +74,11 @@
         <p class="date">{file.UploadedAt.substring(5, 10)}</p>
 
         <div class="actions">
-          <p><DotsIcon /></p>
+          <button on:click={() => ((current_file = file), (dialog_open = true))}
+            ><DotsIcon /></button
+          >
         </div>
-
-      </button>
+      </div>
     {/each}
   </div>
 </div>
@@ -90,6 +88,7 @@
     border: 0.1em solid var(--border);
     border-radius: 0.5em;
     max-width: 30em;
+    width: 100%;
   }
   .header {
     border-bottom: 0.1em solid var(--border);
@@ -143,7 +142,6 @@
   a,
   p,
   button {
-    /* direction: rtl; */
     width: min-content;
     white-space: nowrap;
     display: flex;
@@ -151,5 +149,16 @@
     justify-content: center;
     text-decoration: none;
     gap: 1em;
+  }
+
+  .ttl_form {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .ttl_form input {
+    width: 2ch;
+    max-width: 3em;
+    border-bottom: 0.025em solid var(--text);
   }
 </style>
