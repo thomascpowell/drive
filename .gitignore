@@ -1,23 +1,6 @@
-# backend
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.out
-coverage.*
-*.coverprofile
-profile.cov
-go.work
-go.work.sum
-
 .env
 .DS_Store
-*.db
-backend/data/user_files/
-
-# frontend
+backend/user_files/
 node_modules/
 build/
 .svelte-kit/

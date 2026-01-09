@@ -2,8 +2,8 @@ package redis
 
 import (
 	"context"
-	"time"
 	"github.com/redis/go-redis/v9"
+	"time"
 )
 
 type RedisInterface interface {
@@ -11,10 +11,9 @@ type RedisInterface interface {
 	Setex(key string, value string, ttl int) error
 	Get(key string) (string, error)
 	TTL(key string) (string, error)
-
 }
-var _ RedisInterface = (*Redis)(nil)
 
+var _ RedisInterface = (*Redis)(nil)
 
 type Redis struct {
 	Client *redis.Client

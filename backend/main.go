@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-
 	"github.com/thomascpowell/drive/api"
 	"github.com/thomascpowell/drive/jobs"
 	"github.com/thomascpowell/drive/redis"
@@ -14,7 +13,7 @@ var QUEUE_SIZE = 10
 var WORKER_COUNT = 4
 
 func main() {
-	s := store.NewStore("./data/app.db")
+	s := store.NewStore(utils.GetPostgresDSN())
 	r := redis.NewRedis(utils.GetRedisURL())
 	dispatcher := jobs.NewDispatcher(s, &r, QUEUE_SIZE)
 	dispatcher.StartWorkers(WORKER_COUNT)

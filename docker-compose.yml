@@ -1,34 +1,51 @@
 services:
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - files_data:/app/user_files
+    environment:
+      BASE_URL: ${BASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_URL: ${REDIS_URL}
+
+  postgres:
+    build:
+      context: ./postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    
   redis:
-    container_name: drive-redis
     build:
       context: ./redis
     restart: unless-stopped
 
-  backend:
-    container_name: drive-backend
-    build:
-      context: ./backend
-    volumes:
-      - db_data:/app/data
-    restart: unless-stopped
-    depends_on:
-      - redis
-    environment:
-      JWT_SECRET: EXAMPLE
-      ENVIRONMENT: dev
-      FE_URL: localhost
-
   frontend:
-    container_name: drive-frontend
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
-    image: frontend
     restart: "no"
 
   nginx:
-    container_name: drive-nginx
     build:
       context: ./nginx
     ports:
@@ -40,4 +57,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  db_data:
+  postgres_data:
+  files_data:

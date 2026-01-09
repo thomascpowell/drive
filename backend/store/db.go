@@ -2,9 +2,8 @@ package store
 
 import (
 	"log"
-
 	"github.com/thomascpowell/drive/models"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -24,7 +23,7 @@ type Store struct {
 var _ StoreInterface = (*Store)(nil)
 
 func NewStore(dsn string) *Store {
-	db, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
 	}

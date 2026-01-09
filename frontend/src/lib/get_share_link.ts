@@ -1,5 +1,5 @@
 import { API_URL } from '$lib/utils/config'
-import type { Res, FileRec, Share } from '$lib/utils/types'
+import type { Res, Share } from '$lib/utils/types'
 
 export async function get_share_link(req: Share): Promise<Res> {
   const ENDPOINT = API_URL + "/share/"

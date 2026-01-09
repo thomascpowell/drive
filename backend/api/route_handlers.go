@@ -2,16 +2,15 @@ package api
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/thomascpowell/drive/jobs"
+	"github.com/thomascpowell/drive/models"
+	"github.com/thomascpowell/drive/utils"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
-
-	"github.com/gin-gonic/gin"
-	"github.com/thomascpowell/drive/jobs"
-	"github.com/thomascpowell/drive/models"
-	"github.com/thomascpowell/drive/utils"
 )
 
 func handleGetSharedFile(dispatcher *jobs.Dispatcher) gin.HandlerFunc {
