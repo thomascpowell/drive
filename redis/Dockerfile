@@ -1,4 +1,4 @@
-FROM redis:8.4.0-bookworm
+FROM redis:8.4.0
 
 # Currently unused configuration
 # For demonstrating my Redis clone project
