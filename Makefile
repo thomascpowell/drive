@@ -1,9 +1,9 @@
-# Commands for local development
-
 .PHONY: pg_start pg_stop redis_start redis_stop be fe
 
+# For development
+# See docker-compose.yml for prod
+
 pg_start:
-	# uses Docker for convenience, but binds to loopback
 	docker rm -f pg-dev 2>/dev/null || true
 	docker run --name pg-dev -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=dev -p 127.0.0.1:5432:5432 -d postgres:latest
 
@@ -24,5 +24,4 @@ fe:
 	cd frontend && exec npm run dev
 
 env:
-	# quickly create a .env
 	cp env.example .env
