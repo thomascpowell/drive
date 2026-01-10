@@ -26,8 +26,8 @@ fe:
 env:
 	cp env.example .env
 
-test:
-	cd backend && exec go test -v ./tests
+unit: 
+	cd backend && exec go test --count=1 -v ./unit
 
-integration:
-	cd backend && exec go test -v ./integration
+integration: 
+	cd backend && exec go test --count=1 -v ./integration

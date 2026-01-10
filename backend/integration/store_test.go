@@ -1,14 +1,25 @@
-package tests
+package integration
 
 import (
+	"fmt"
+	"net"
+	"testing"
+	"time"
+
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/store"
-	"testing"
-	"fmt"
+	"github.com/thomascpowell/drive/utils"
 )
 
 func TestDBOperations(t *testing.T) {
-	s := store.NewStore(":memory:")
+	timeout := 1 * time.Second
+	conn, err := net.DialTimeout("tcp", "127.0.0.1:5432", timeout)
+	if err != nil {
+		t.Skip("Postgres unavailable.")
+		return
+	}
+	conn.Close()
+	s := store.NewStore(utils.GetPostgresDSN())
 
 	testUser := &models.User{
 		Username: "testuser",

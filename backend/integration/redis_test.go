@@ -2,6 +2,7 @@ package integration
 
 import (
 	"context"
+	"net"
 	"testing"
 	"time"
 
@@ -10,6 +11,14 @@ import (
 )
 
 func TestRedisConnection(t *testing.T) {
+	timeout := 1 * time.Second
+	conn, err := net.DialTimeout("tcp", "127.0.0.1:6379", timeout)
+	if err != nil {
+		t.Skip("Redis unavailable.")
+		return
+	}
+	conn.Close()
+
 	rdb := redis.NewRedis(utils.GetRedisURL())
 
 	// test general function

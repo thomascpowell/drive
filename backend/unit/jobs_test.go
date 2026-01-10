@@ -172,5 +172,3 @@ func TestQueue(t *testing.T) {
 		}
 	}
 }
-
-// TODO: token generation jobs
