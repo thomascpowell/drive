@@ -1,5 +1,5 @@
 # Drive
-Fullstack file storage server with Dropbox-like functionality.
+File storage server with Dropbox-like functionality.
 
 [![Tests](https://github.com/thomascpowell/drive/actions/workflows/tests.yml/badge.svg)](https://github.com/thomascpowell/drive/actions/workflows/tests.yml)
 
@@ -11,39 +11,10 @@ Fullstack file storage server with Dropbox-like functionality.
 ## Stack
 - Frontend: SvelteKit (TypeScript) with Vite
 - Backend: Go (Gin, GORM)
-- Stores: SQLite, Redis
+- Stores: Postgres, Redis
 - Deployment: Docker, Nginx
 
-## Requirements
-- For Development: `Node`, `Go`, and `Redis`
-- For Production: Any Docker environment
-
 ## Usage
-### Development
-```sh
-# Start a Redis server
-redis-server
-
-# Start the backend
-cd backend
-go run main.go
-
-# Start the frontend
-cd frontend
-npm install
-npm run dev
-```
-
-### Testing
-```sh
-# Run unit tests
-go test -v ./tests
-
-# Run Redis integration tests
-go test -v ./integration
-```
-
-### Production
-```sh
-docker-compose up --build
-```
+- Requires: `Node`, `Go` and any Docker enviroment
+- See `Makefile` for local development and running tests
+- See `docker-compose.yml` for production
