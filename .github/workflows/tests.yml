@@ -27,6 +27,5 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
 
-    - name: Test
-      working-directory: ./backend
-      run: go test -v ./tests
+    - name: unit tests
+      run: make unit
