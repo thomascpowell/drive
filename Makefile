@@ -25,3 +25,9 @@ fe:
 
 env:
 	cp env.example .env
+
+test:
+	cd backend && exec go test -v ./tests
+
+integration:
+	cd backend && exec go test -v ./integration
