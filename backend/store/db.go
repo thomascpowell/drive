@@ -1,10 +1,10 @@
 package store
 
 import (
-	"log"
 	"github.com/thomascpowell/drive/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 )
 
 type StoreInterface interface {

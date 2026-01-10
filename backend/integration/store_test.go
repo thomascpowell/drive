@@ -2,13 +2,12 @@ package integration
 
 import (
 	"fmt"
-	"net"
-	"testing"
-	"time"
-
 	"github.com/thomascpowell/drive/models"
 	"github.com/thomascpowell/drive/store"
 	"github.com/thomascpowell/drive/utils"
+	"net"
+	"testing"
+	"time"
 )
 
 func TestDBOperations(t *testing.T) {

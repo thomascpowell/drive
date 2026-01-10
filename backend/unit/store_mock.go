@@ -6,10 +6,10 @@ import (
 
 // create scriptable version of Store
 type MockStore struct {
-	CreateFileFunc       func(*models.File) error
-	GetFilesByUserIDFunc func(uint) ([]models.File, error)
-	GetFileByIDFunc      func(uint) (*models.File, error)
-	DeleteFileByIDFunc   func(uint) error
+	CreateFileFunc        func(*models.File) error
+	GetFilesByUserIDFunc  func(uint) ([]models.File, error)
+	GetFileByIDFunc       func(uint) (*models.File, error)
+	DeleteFileByIDFunc    func(uint) error
 	GetUserByUsernameFunc func(string) (*models.User, error)
 }
 

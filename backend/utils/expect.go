@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"testing"
 	"reflect"
+	"testing"
 )
 
 func Expect[T comparable](t *testing.T, got T, want T, msg string) {

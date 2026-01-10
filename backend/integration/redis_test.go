@@ -2,12 +2,11 @@ package integration
 
 import (
 	"context"
+	"github.com/thomascpowell/drive/redis"
+	"github.com/thomascpowell/drive/utils"
 	"net"
 	"testing"
 	"time"
-
-	"github.com/thomascpowell/drive/redis"
-	"github.com/thomascpowell/drive/utils"
 )
 
 func TestRedisConnection(t *testing.T) {
@@ -34,7 +33,6 @@ func TestRedisConnection(t *testing.T) {
 	utils.Expect(t, get, "some value", "unexpected redis response")
 
 	// test ttl
-	// for the most part i'll trust my rust-side unit tests
 	rdb.Setex("b", "some other value", 1)
 	// waste exactly 1001 milliseconds of my life
 	time.Sleep(1001 * time.Millisecond)

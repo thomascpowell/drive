@@ -20,4 +20,3 @@ func GetSlugAsString(ctx *gin.Context, param string) (string, bool) {
 	idStr := ctx.Param(param)
 	return idStr, true
 }
-

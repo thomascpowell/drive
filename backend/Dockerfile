@@ -1,5 +1,4 @@
 FROM golang:1.24.3-alpine
-RUN apk add --no-cache gcc musl-dev
 
 WORKDIR /app
 RUN mkdir -p ./data

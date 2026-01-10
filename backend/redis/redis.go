@@ -38,7 +38,6 @@ func (rc *Redis) Set(key string, value string) error {
 func (rc *Redis) Setex(key string, value string, ttl int) error {
 	ctx, cancel := getCTX(2)
 	defer cancel()
-	// very stupid time.Duration requirement
 	_, err := rc.Client.SetEx(ctx, key, value, time.Duration(ttl)*time.Second).Result()
 	return err
 }
