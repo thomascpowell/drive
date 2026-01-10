@@ -1,4 +1,4 @@
-name: Tests
+name: tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  Tests:
+  tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -27,5 +27,5 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
 
-    - name: unit tests
+    - name: Tests
       run: make unit
