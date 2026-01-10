@@ -4,8 +4,8 @@ File storage server with Dropbox-like functionality.
 [![Tests](https://github.com/thomascpowell/drive/actions/workflows/tests.yml/badge.svg)](https://github.com/thomascpowell/drive/actions/workflows/tests.yml)
 
 ## Features
+- Secure authentication with JWTs
 - File management operations (upload, download, delete)
-- Clean UI with secure authentication via JWTs
 - Files are private by default, with optional share link generation
 
 ## Stack
